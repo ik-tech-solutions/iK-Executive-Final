@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "436224948921",
+    "firebase_url": "https://iklogo-default-rtdb.firebaseio.com",
+    "project_id": "iklogo",
+    "storage_bucket": "iklogo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436224948921:android:41d3808e4406a2fe12f968",
+        "android_client_info": {
+          "package_name": "com.ik.ikdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436224948921-9m86ioo4tthes5e81vohton5qg469r68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ik.ikdriver",
+            "certificate_hash": "b871e83ba40c294d8758b849edc25832115fe346"
+          }
+        },
+        {
+          "client_id": "436224948921-142109nna3nuqujr8vb5qdjenhectp34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARFQsbHZh21vcPnBhhCE8fnVopbiOYeJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436224948921-142109nna3nuqujr8vb5qdjenhectp34.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436224948921-bbgu8tfjquafnvuj6lmdcj1un9f8fcqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ik.taxicustomer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436224948921:android:c172a580676d883012f968",
+        "android_client_info": {
+          "package_name": "com.ik.taxicustomer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436224948921-h3403aoe66lnd9700kv1dbeppcnmaec4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ik.taxicustomer",
+            "certificate_hash": "b871e83ba40c294d8758b849edc25832115fe346"
+          }
+        },
+        {
+          "client_id": "436224948921-142109nna3nuqujr8vb5qdjenhectp34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARFQsbHZh21vcPnBhhCE8fnVopbiOYeJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436224948921-142109nna3nuqujr8vb5qdjenhectp34.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436224948921-bbgu8tfjquafnvuj6lmdcj1un9f8fcqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ik.taxicustomer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
