@@ -65,36 +65,36 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
           ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              openShowPopup();
-            },
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10, left: 14, top: 8, bottom: 8),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of('Tema'),
-                      style: Theme.of(context).textTheme.caption.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).textTheme.headline6.color,
-                          ),
-                    ),
-                    Expanded(child: SizedBox()),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Theme.of(context).disabledColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // InkWell(
+          //   highlightColor: Colors.transparent,
+          //   splashColor: Colors.transparent,
+          //   onTap: () {
+          //     openShowPopup();
+          //   },
+          //   child: Container(
+          //     color: Theme.of(context).scaffoldBackgroundColor,
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(right: 10, left: 14, top: 8, bottom: 8),
+          //       child: Row(
+          //         children: <Widget>[
+          //           Text(
+          //             AppLocalizations.of('Tema'),
+          //             style: Theme.of(context).textTheme.caption.copyWith(
+          //                   fontWeight: FontWeight.bold,
+          //                   color: Theme.of(context).textTheme.headline6.color,
+          //                 ),
+          //           ),
+          //           Expanded(child: SizedBox()),
+          //           Icon(
+          //             Icons.arrow_forward_ios,
+          //             size: 16,
+          //             color: Theme.of(context).disabledColor,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Container(
             height: 1,
             color: Theme.of(context).dividerColor,
@@ -147,7 +147,7 @@ class _MyProfileState extends State<MyProfile> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              openShowPopupLanguage();
+              // openShowPopupLanguage();
             },
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -173,11 +173,11 @@ class _MyProfileState extends State<MyProfile> {
                     SizedBox(
                       width: 4,
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Theme.of(context).disabledColor,
-                    ),
+                    // Icon(
+                    //   Icons.arrow_forward_ios,
+                    //   size: 16,
+                    //   color: Theme.of(context).disabledColor,
+                    // ),
                   ],
                 ),
               ),
@@ -191,7 +191,7 @@ class _MyProfileState extends State<MyProfile> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              openShowPopupLanguage();
+              // openShowPopupLanguage();
             },
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -217,11 +217,11 @@ class _MyProfileState extends State<MyProfile> {
                     SizedBox(
                       width: 4,
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Theme.of(context).disabledColor,
-                    ),
+                    // Icon(
+                    //   Icons.arrow_forward_ios,
+                    //   size: 16,
+                    //   color: Theme.of(context).disabledColor,
+                    // ),
                   ],
                 ),
               ),
@@ -235,7 +235,7 @@ class _MyProfileState extends State<MyProfile> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              openShowPopupLanguage();
+              // openShowPopupLanguage();
             },
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -261,11 +261,11 @@ class _MyProfileState extends State<MyProfile> {
                     SizedBox(
                       width: 4,
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Theme.of(context).disabledColor,
-                    ),
+                    // Icon(
+                    //   Icons.arrow_forward_ios,
+                    //   size: 16,
+                    //   color: Theme.of(context).disabledColor,
+                    // ),
                   ],
                 ),
               ),
@@ -482,7 +482,7 @@ class _MyProfileState extends State<MyProfile> {
 
   selectLanguage(String languageCode) {
     constance.locale = languageCode;
-    MyApp.setCustomeLanguage(context, languageCode);
+    // MyApp.setCustomeLanguage(context, languageCode);
   }
 
   openShowPopup() {
@@ -687,7 +687,7 @@ class _MyProfileState extends State<MyProfile> {
         selectFifthColor = false;
         selectSixthColor = false;
       });
-      MyApp.setCustomeTheme(context, 0);
+      // MyApp.setCustomeTheme(context, 0);
     }
   }
 
@@ -701,7 +701,7 @@ class _MyProfileState extends State<MyProfile> {
         selectFifthColor = false;
         selectSixthColor = false;
       });
-      MyApp.setCustomeTheme(context, 1);
+      // MyApp.setCustomeTheme(context, 1);
     }
   }
 
@@ -716,7 +716,7 @@ class _MyProfileState extends State<MyProfile> {
         selectSixthColor = false;
       });
     }
-    MyApp.setCustomeTheme(context, 2);
+    // MyApp.setCustomeTheme(context, 2);
   }
 
   selectfourthColor() {
@@ -730,7 +730,7 @@ class _MyProfileState extends State<MyProfile> {
         selectSixthColor = false;
       });
     }
-    MyApp.setCustomeTheme(context, 3);
+    // MyApp.setCustomeTheme(context, 3);
   }
 
   selectfifthColor() {
@@ -744,7 +744,7 @@ class _MyProfileState extends State<MyProfile> {
         selectSixthColor = false;
       });
     }
-    MyApp.setCustomeTheme(context, 4);
+    // MyApp.setCustomeTheme(context, 4);
   }
 
   selectsixthColor() {
@@ -758,7 +758,7 @@ class _MyProfileState extends State<MyProfile> {
         selectSixthColor = true;
       });
     }
-    MyApp.setCustomeTheme(context, 5);
+    // MyApp.setCustomeTheme(context, 5);
   }
 
   int light = 1;
@@ -766,9 +766,9 @@ class _MyProfileState extends State<MyProfile> {
 
   changeColor(int color) {
     if (color == light) {
-      MyApp.setCustomeTheme(context, 6);
+      // MyApp.setCustomeTheme(context, 6);
     } else {
-      MyApp.setCustomeTheme(context, 7);
+      // MyApp.setCustomeTheme(context, 7);
     }
   }
 

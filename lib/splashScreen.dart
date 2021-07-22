@@ -13,6 +13,7 @@ import 'package:my_cab_driver/pickup/pickupScreen.dart';
 import 'package:my_cab_driver/vehicalManagement/addVehicalScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'Language/LanguageData.dart';
+import 'auth/phoneAuthScreen.dart';
 import 'constance/constance.dart' as constance;
 import 'package:my_cab_driver/constance/routes.dart';
 import 'package:my_cab_driver/database/HelperMethods.dart';
@@ -119,6 +120,14 @@ class _SplashScreenState extends State<SplashScreen>
         if(!saoVersoesDiferentes) {
           print("=======================---------------- " + saoVersoesDiferentes.toString());
           _loadNextScreen();
+
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => PhoneVerification(),
+          //   ),
+          // );
+
         }
       }
     });

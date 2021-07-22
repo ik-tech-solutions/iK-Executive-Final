@@ -1,5 +1,11 @@
+library  login_view;
+
 import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/list_notifier.dart';
+import 'package:my_cab_driver/app/features/authentication/views/screens/authentication_screen.dart';
+import 'package:my_cab_driver/app/features/registration/views/screens/registration_screen.dart';
+import 'package:my_cab_driver/app/utils/services/firebase_services.dart';
 import 'package:my_cab_driver/auth/signUpScreen.dart';
 import 'package:my_cab_driver/constance/constance.dart';
 import 'package:my_cab_driver/Language/appLocalizations.dart';
@@ -8,404 +14,157 @@ import 'package:my_cab_driver/appTheme.dart';
 import 'package:my_cab_driver/database/auth/autenticacao.dart';
 
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:my_cab_driver/app/constants/assets_constant.dart';
+import 'package:my_cab_driver/app/features/login/controllers/login_controller.dart';
 
-class _LoginScreenState extends State<LoginScreen> {
-  // Country _selectedDialogCountry = CountryPickerUtils.getCountryByIsoCode('IN');
-  var appBarheight = 0.0;
-  String countryCode = "+351";
+part '../app/features/login/views/components/phone_number_field.dart';
+part '../app/features/login/views/components/illustration_image.dart';
+part '../app/features/login/views/components/header_text.dart';
+part '../app/features/login/views/components/login_button.dart';
+part '../app/features/login/views/components/registration_button.dart';
 
-  var txtemailLogin = TextEditingController();
-  var txtpasswordLogin = TextEditingController();
+
+class LoginScreen extends StatelessWidget {
+   LoginScreen({Key key}) : super(key: key);
+
+   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+   final phoneNumber = TextEditingController();
+   final isLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
-    appBarheight =
-        AppBar().preferredSize.height + MediaQuery
-            .of(context)
-            .padding
-            .top;
     return Scaffold(
-      // backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
-        constraints: BoxConstraints(
-            minHeight: MediaQuery
-                .of(context)
-                .size
-                .height,
-            minWidth: MediaQuery
-                .of(context)
-                .size
-                .width),
-
-
-        child: Stack(
-            children: <Widget>[
-              Positioned( //
-                top: 40,
-                child: Image(
-                  image: AssetImage(ConstanceData.login_app),
-                  // fit : BoxFit.fill,
-
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height,
-                ),
-              ),
-
-              InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 14, left: 14),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(
-                          children: <Widget>[
-                            SizedBox(
-                              height: appBarheight,
-                            ),
-                            Card(
-                              color: Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
-                                      ),
-                                    ),
-                                    child: Stack(
-                                      alignment: AlignmentDirectional
-                                          .bottomCenter,
-                                      children: <Widget>[
-                                        Positioned(  //
-                                          top: 0,
-                                          child: Image(
-                                            image: AssetImage(ConstanceData.login_app),
-                                            // fit : BoxFit.fill,
-
-                                            height: MediaQuery.of(context).size.height,
-                                          ),
-                                        ),
-
-                                        Animator(
-                                          tween: Tween<Offset>(
-                                            begin: Offset(0, 0.4),
-                                            end: Offset(0, 0),
-                                          ),
-                                          duration: Duration(seconds: 1),
-                                          cycles: 1,
-                                          builder: (anim) =>
-                                              SlideTransition(
-                                                position: anim,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      top: 70,
-                                                      left: 135,
-                                                      right: 18),
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                        children: <Widget>[
-                                                          Center(
-                                                            child: Text(
-                                                              AppLocalizations
-                                                                  .of('LOGIN'),
-                                                              style: Theme
-                                                                  .of(context)
-                                                                  .textTheme
-                                                                  .subtitle2
-                                                                  .copyWith(
-                                                                fontWeight: FontWeight
-                                                                    .bold,
-                                                                color: Theme.of(context).primaryColor,
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                        ],
-                                                      ),
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                        ),
-
-                                        Animator(
-                                          tween: Tween<Offset>(
-                                            begin: Offset(0, 0.4),
-                                            end: Offset(0, 0),
-                                          ),
-                                          duration: Duration(seconds: 1),
-                                          cycles: 1,
-                                          builder: (anim) =>
-                                              SlideTransition(
-                                                position: anim,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      top: 20,
-                                                      left: 135,
-                                                      right: 18),
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                        children: <Widget>[
-
-
-                                                        ],
-                                                      ),
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 14,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 16, left: 16),
-                                    child: Column(
-                                      children: <Widget>[
-                                        _emailLoginUI(),
-                                        _passwordLoginUI(),
-                                        InkWell(
-                                          highlightColor: Colors.transparent,
-                                          splashColor: Colors.transparent,
-                                          onTap: () {
-                                            Center( child: showLoaderDialog(context));
-                                            Autenticacao.login(txtemailLogin.text,txtpasswordLogin.text, context);
-
-
-                                          },
-                                          child: Container(
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius
-                                                  .circular(10),
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                AppLocalizations.of('ENTRAR'),
-                                                style: Theme
-                                                    .of(context)
-                                                    .textTheme
-                                                    .button
-                                                    .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme
-                                                      .of(context)
-                                                      .scaffoldBackgroundColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  AppLocalizations.of(' '), //Pode colocar texto
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .button
-                                      .copyWith(
-                                    color:
-                                    Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline6
-                                        .color,
-                                  ),
-                                ),
-                                InkWell(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SignUpScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    AppLocalizations.of('Registar-me agora!'),
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .subtitle2
-                                        .copyWith(
-                                      color: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .headline6
-                                          .color,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
+        body: CustomScrollView(
+          slivers: [
+            SliverList(
+                delegate: SliverChildListDelegate([
+                  SizedBox(
+                    width: Get.width,
+                    height: Get.height,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(flex: 6),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: _HeaderText(),
+                        ),
+                        Spacer(flex: 4),
+                        _IllustrationImage(),
+                        Spacer(flex: 4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: inputNumber(context),
+                        ),
+                        Spacer(flex: 2),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: login(context),
+                        ),
+                        Spacer(flex: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Não possui uma conta? "),
+                            TextButton(
+                              style: TextButton.styleFrom(primary: Theme.of(context).primaryColor),
+                              onPressed: () => goToRegistrationScreen(context),
+                              child: Text("Registar"),
+                            )
                           ],
                         ),
-                      )
-                    ],
+                        Spacer(flex: 2),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-
-            ]
-        ),
-
-      ),
-    );
+                ]))
+          ],
+        ));
   }
 
-  Widget _emailLoginUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top:5,left:5,bottom:16,right:5),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(38)),
-          border: Border.all(color: Theme.of(context).dividerColor, width: 0.6),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Container(
-            height: 50,
-            child: Center(
-              child: TextField(
-                maxLines: 1,
-                controller: txtemailLogin,
-                keyboardType: TextInputType.emailAddress,
-                //onChanged: (String txt) {},
-                cursorColor: Theme.of(context).primaryColor,
-                decoration: new InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "nome@exemplo.com",
-                  hintStyle: TextStyle(color: Theme.of(context).disabledColor),
-                ),
-              ),
+  Widget login(BuildContext context) {
+    return Obx(
+          () => ElevatedButton(
+
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
             ),
-          ),
-        ),
+        onPressed: isLoading.value ? null : () async => {
+          if (formKey.currentState.validate())  {
+            isLoading.value = true,
+            await UserServices.phoneNumberExists(phoneNumber.text.trim(),
+                onError: (_) {
+                  isLoading.value = false;
+                }).then((exist) {
+              isLoading.value = false;
+              if (exist) {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AuthenticationScreen(telefoneEmVerificacao: phoneNumber.text),
+                  ),
+                );
+
+                print("Numero ======= Existe ===== " + phoneNumber.text);
+              } else {
+                print("Numero ======= Não Existe===== " + phoneNumber.text);
+
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Este número não foi encontrado'),
+                  backgroundColor: Colors.red,
+                ));
+
+
+
+              }
+            }),
+          }
+        },
+        child:isLoading.value
+            ? SizedBox(
+          width: 30,
+          height: 30,
+          child: CircularProgressIndicator(),
+        )
+            : Text("Login"),
       ),
     );
   }
 
-  Widget _passwordLoginUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top:5,left:5,bottom:16,right:5),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(38)),
-          border: Border.all(color: Theme.of(context).dividerColor, width: 0.6),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Container(
-            height: 50,
-            child: Center(
-              child: TextField(
-                controller:txtpasswordLogin,
-                autocorrect: false,
-                obscureText: true,
-                maxLines: 1,
-                onChanged: (String txt) {},
-                cursorColor: Theme.of(context).primaryColor,
-                decoration: new InputDecoration(
-                  // errorText: isValidateLogin ? 'Informe a palavra passe' : null,
-                  border: InputBorder.none,
-                  hintText: "Palavra passe",
-                  hintStyle: TextStyle(color: Theme.of(context).disabledColor),
-                ),
-              ),
+  Widget inputNumber(BuildContext context){
+    return Form(
+      key: formKey,
+      child: TextFormField(
+        controller: phoneNumber,
+        keyboardType: TextInputType.phone,
+        validator: (value) {
+          if (value == null || value.trim() == "") return "";
+          return null;
+        },
+        decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.phone,
+              color: Colors.grey,
             ),
-          ),
-        ),
+            hintText: "Número de telefone"),
       ),
     );
   }
 
-  showLoaderDialog(BuildContext context){
-    AlertDialog alert=AlertDialog(
-      content: new Row(
-        children: [
-          CircularProgressIndicator(),
-          Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
-        ],),
-    );
-    showDialog(barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return alert;
-      },
-    );
-  }
+   void goToRegistrationScreen(BuildContext context) {
+     Navigator.push(
+       context,
+       MaterialPageRoute(
+         builder: (context) => RegistrationScreen(telefoneEmVerificacao: phoneNumber.text),
+       ),
+     );
+   }
 
-  String getCountryString(String str) {
-    var newString = '';
-    var isFirstdot = false;
-    for (var i = 0; i < str.length; i++) {
-      if (isFirstdot == false) {
-        if (str[i] != ',') {
-          newString = newString + str[i];
-        } else {
-          isFirstdot = true;
-        }
-      }
-    }
-    return newString;
-  }
+
 }
+

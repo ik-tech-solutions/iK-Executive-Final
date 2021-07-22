@@ -123,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                    child: Column(
                                    children: <Widget>[
                                    Container(
-                                   height: 150,
+                                   height: 50,
                 decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
@@ -145,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Padding(
                 padding: const EdgeInsets.only(
-                top: 70, left: 130, right: 18),
+                top: 5, left: 130, right: 18),
                 child: Column(
                 children: <Widget>[
                 Row(
@@ -195,9 +195,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 padding: const EdgeInsets.only(right: 16, left: 16),
                 child: Column(
                 children: <Widget>[
+                  _countryView(),
                   _nameUI(),
                   _emailUI(),
-                  _countryView(),
+
                   _passwordUI(),
 
                 InkWell(
@@ -208,7 +209,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   validateTextField(txtnome.text, txtemail.text, txtpassword.text, txtphone.text);
 
                   Center( child: showLoaderDialog(context));
-                  Autenticacao.registrarUsuario(txtnome.text,txtemail.text,txtphone.text,txtpassword.text, context);
+                  Autenticacao.registrarUsuario(txtnome.text,txtemail.text,countryCode+txtphone.text,txtpassword.text, context);
 
                 },
                 child: Container(
@@ -355,7 +356,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // labelText: 'E-mail',
                   // errorText: isValidate ? 'Informe o e-mail' : null,
                   border: InputBorder.none,
-                  hintText: "nome@example.com",
+                  hintText: "Email",
                   hintStyle: TextStyle(color: Theme.of(context).disabledColor),
                 ),
               ),
@@ -403,7 +404,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _nameUI() {
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(5),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
@@ -488,7 +489,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // labelText: '  Telefone',
                       // errorText: isValidate ? 'Informe o telefone' : null,
                       border: InputBorder.none,
-                      hintText: AppLocalizations.of(" Phone Number"),
+                      hintText: AppLocalizations.of("Telefone"),
                       hintStyle:
                       TextStyle(color: Theme.of(context).disabledColor),
                     ),
@@ -523,7 +524,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
    AlertDialog alert=AlertDialog(
     content: new Row(
      children: [
-      CircularProgressIndicator(),
+      CircularProgressIndicator(color: Theme.of(context).primaryColor),
       Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
      ],),
    );

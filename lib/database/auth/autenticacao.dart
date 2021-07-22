@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_restart/flutter_restart.dart';
+import 'package:my_cab_driver/Language/appLocalizations.dart';
+import 'package:my_cab_driver/auth/loginScreen.dart';
 import 'package:my_cab_driver/constance/routes.dart';
 import 'package:my_cab_driver/constance/global.dart';
 import 'package:my_cab_driver/database/HelperMethods.dart';
@@ -22,24 +24,436 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Autenticacao{
 
+  //Verificar se o usuario
+  static isUserRegistered(String idDoMotorista) async{
+    DataSnapshot dataSnapshot = await FirebaseDatabase.instance.reference().child('motorista').child(idDoMotorista).once();
+    if(dataSnapshot.value!=null){
+      print("Já registrado ================ {{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}} ");
+    } else{
+      print("Ainda não registrado ================ {{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}} ");
+    }
+  }
+
   //Registro
   static  registrarUsuario(String nome, String email, String telefone, String password, BuildContext context) async {
     User user_;
     String errorMessage;
     PushNotificationService notification = PushNotificationService();
+    var txtSMScodeOTP = TextEditingController();
 
     String generateMd5(String texto) {
       return "ik"+(md5.convert(utf8.encode(texto)).toString()).substring(1,8);
     }
 
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+    print("Telefone informado =======  Registo " + telefone);
 
-      user_ = result.user; //Local
-      user = result.user; //global
+    try {
+
+
+
+        await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: telefone,
+            verificationCompleted: (PhoneAuthCredential credential) async {
+              await FirebaseAuth.instance
+                  .signInWithCredential(credential)
+                  .then((value) async {
+
+                if (value.user != null) {
+                  user = value.user; //global - variavel
+                  user_ = value.user; //Local
+
+                  isUserRegistered(user.uid);
+
+                  /*
+                  if(user_ !=null){
+                    DatabaseReference newUserRef = FirebaseDatabase.instance.reference().child('motorista/${user_.uid}');
+                    Map userMap = {
+                      'nome': nome,
+                      'email':email,
+                      'phone': telefone,
+                      'senha': password,
+                      'status': 'aguardando',
+                      'token': generateMd5(telefone),
+                      'uid': user_.uid,
+                    };
+                    newUserRef.child("perfil").set(userMap).then((_) {
+
+                      /**
+                       * Salvar a carteira
+                       */
+
+                      Map carteiraMap = {
+                        'ganho_total': "0",
+                        'taxa_total': "0",
+                        'desconto_total': "0",
+                      };
+
+
+                      newUserRef.child("carteira").set(carteiraMap).then((_) {
+
+                        /**
+                         * Salvar a notificacao
+                         */
+                        notificacaoRef = FirebaseDatabase.instance.reference().child('motorista').child(user_.uid).child("notificacoes");
+
+                        Map notificacaoPadrao = {
+                          'usuario'  : 'Sistema',
+                          'mensagem' : 'Seja muito bem vindo ' + email,
+                          'data'     : DateTime.now().toString().substring(0,16)
+                        };
+
+                        // /**
+                        //  * REgitro de Online/Offline
+                        //  */
+                        // newUserRef.child("estado").set(isOffline);
+
+                        notificacaoRef.push().set(notificacaoPadrao).then((_) {
+
+                          if(user_ != null) {
+                            auth = FirebaseAuth.instance;
+                            userid = user_.uid;
+
+                            DatabaseReference userPerfilRef = FirebaseDatabase.instance.reference().child('motorista/$userid/perfil');
+                            userPerfilRef.once().then((DataSnapshot snapshot){
+                              if(snapshot.value!=null){
+                                currentUserInfo = new Usuario.fromSnapshot(snapshot);
+                              }
+                            });
+
+                            DatabaseReference userCarteiraRef = FirebaseDatabase.instance.reference().child('motorista/$userid/carteira');
+                            userCarteiraRef.once().then((DataSnapshot snapshot){
+                              if(snapshot.value!=null){
+                                userCarteira = Carteira.fromSnapshot(snapshot);
+                              }
+                              print('Print2: $nomeUsuario');
+                            });
+
+                            HelperMethods.getCurrentUserInfo();
+                            HelperMethods.getVeiculoDados();
+                            HelperMethods.getCarList();
+                            HelperMethods.getTaxasDaEmpresa();
+                            HelperMethods.getServicosAdicionais();
+                            HelperMethods.getTiposDeCasas();
+                            HelperMethods.getTermosContactos();
+                            HelperMethods.getFeriadosList();
+
+                            notification.initialize(context);
+                            notification.getToken();
+
+
+
+                            print("Registrado com sucesso. " + nome);
+
+                            resultadoDoRegistro = true;
+
+                            FlutterRestart.restartApp();
+                          }
+
+                        });
+
+                      });
+
+                    });
+                  }
+                  */
+
+                }
+
+              });
+            },
+            verificationFailed: (FirebaseAuthException e) {
+              print("Erro =========================================  " + e.message);
+              if (e.code == 'invalid-phone-number') {
+                print('The provided phone number is not valid. ============================================ Numero Invalido');
+              }
+            },
+            codeSent: (String verficationID, int resendToken) async {
+              print("Envio de Codigo" + verficationID);
+              // setState(() {
+              //   _verificationCode = verficationID;
+              // });
+
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          Icons.email_outlined,
+                          size: 80,
+                          color: Colors.blueGrey,
+                        ),
+                        Text(
+                          AppLocalizations.of('Verificação'),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: Theme.of(context).textTheme.subtitle1.color,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+                          child: Text(
+                            AppLocalizations.of('Informe o código enviado por SMS'),
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                              color: Theme.of(context).disabledColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Divider(
+                          height: 0,
+                        ),
+                        Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                  color: Theme.of(context).dividerColor),
+                              color: Theme.of(context).backgroundColor,
+                            ),
+                            child: TextFormField(
+                              controller: txtSMScodeOTP,
+                              autofocus: false,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .color,
+                              ),
+                              enabled: false,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                hintText: 'OTP',
+                                prefixIcon: Icon(
+                                  Icons.question_answer_rounded,
+                                  size: 20,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      .color,
+                                ),
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(
+                                  color:
+                                  Theme.of(context).dividerColor,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+
+                        Divider(
+                          height: 0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16, left: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              // InkWell(
+                              //   onTap: () {
+                              //     Navigator.pop(context);
+                              //   },
+                              //   child: Text(
+                              //     AppLocalizations.of('Cancelar'),
+                              //     style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              //       color: Theme.of(context).disabledColor,
+                              //       fontWeight: FontWeight.bold,
+                              //     ),
+                              //   ),
+                              // ),
+                              Container(
+                                color: Theme.of(context).dividerColor,
+                                width: 0.5,
+                                height: 48,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  Navigator.pop(context);
+
+
+                                //  Coloque aqui a ciencia de confirmacao
+                                  PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verficationID, smsCode: txtSMScodeOTP.text);
+                                  // Sign the user in (or link) with the credential
+                                  await auth.signInWithCredential(credential).then((value) async {
+
+                                    if (value.user != null) {
+                                      user = value.user; //global - variavel
+                                      user_ = value.user; //Local
+
+                                      isUserRegistered(user.uid);
+
+                                      /*
+                  if(user_ !=null){
+                    DatabaseReference newUserRef = FirebaseDatabase.instance.reference().child('motorista/${user_.uid}');
+                    Map userMap = {
+                      'nome': nome,
+                      'email':email,
+                      'phone': telefone,
+                      'senha': password,
+                      'status': 'aguardando',
+                      'token': generateMd5(telefone),
+                      'uid': user_.uid,
+                    };
+                    newUserRef.child("perfil").set(userMap).then((_) {
+
+                      /**
+                       * Salvar a carteira
+                       */
+
+                      Map carteiraMap = {
+                        'ganho_total': "0",
+                        'taxa_total': "0",
+                        'desconto_total': "0",
+                      };
+
+
+                      newUserRef.child("carteira").set(carteiraMap).then((_) {
+
+                        /**
+                         * Salvar a notificacao
+                         */
+                        notificacaoRef = FirebaseDatabase.instance.reference().child('motorista').child(user_.uid).child("notificacoes");
+
+                        Map notificacaoPadrao = {
+                          'usuario'  : 'Sistema',
+                          'mensagem' : 'Seja muito bem vindo ' + email,
+                          'data'     : DateTime.now().toString().substring(0,16)
+                        };
+
+                        // /**
+                        //  * REgitro de Online/Offline
+                        //  */
+                        // newUserRef.child("estado").set(isOffline);
+
+                        notificacaoRef.push().set(notificacaoPadrao).then((_) {
+
+                          if(user_ != null) {
+                            auth = FirebaseAuth.instance;
+                            userid = user_.uid;
+
+                            DatabaseReference userPerfilRef = FirebaseDatabase.instance.reference().child('motorista/$userid/perfil');
+                            userPerfilRef.once().then((DataSnapshot snapshot){
+                              if(snapshot.value!=null){
+                                currentUserInfo = new Usuario.fromSnapshot(snapshot);
+                              }
+                            });
+
+                            DatabaseReference userCarteiraRef = FirebaseDatabase.instance.reference().child('motorista/$userid/carteira');
+                            userCarteiraRef.once().then((DataSnapshot snapshot){
+                              if(snapshot.value!=null){
+                                userCarteira = Carteira.fromSnapshot(snapshot);
+                              }
+                              print('Print2: $nomeUsuario');
+                            });
+
+                            HelperMethods.getCurrentUserInfo();
+                            HelperMethods.getVeiculoDados();
+                            HelperMethods.getCarList();
+                            HelperMethods.getTaxasDaEmpresa();
+                            HelperMethods.getServicosAdicionais();
+                            HelperMethods.getTiposDeCasas();
+                            HelperMethods.getTermosContactos();
+                            HelperMethods.getFeriadosList();
+
+                            notification.initialize(context);
+                            notification.getToken();
+
+
+
+                            print("Registrado com sucesso. " + nome);
+
+                            resultadoDoRegistro = true;
+
+                            FlutterRestart.restartApp();
+                          }
+
+                        });
+
+                      });
+
+                    });
+                  }
+                  */
+
+                                    }
+
+                                  });
+
+                                },
+                                child: Container(
+                                  child: Text(
+                                    AppLocalizations.of('Confirmar'),
+                                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    contentPadding: EdgeInsets.only(top: 16),
+                  );
+                },
+              );
+
+
+
+
+            },
+            codeAutoRetrievalTimeout: (String verificationID) {
+              print("Envio de Codigo Auto Timeout" + verificationID);
+              // setState(() {
+              //   _verificationCode = verificationID;
+              // });
+            },
+            timeout: Duration(seconds: 120));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // UserCredential result = await _auth.createUserWithEmailAndPassword(
+      //     email: email, password: password);
+      //
+      // user_ = result.user; //Local
+      // user = result.user; //global
 
     //  Salvar no Database
+
+   /*
       if(user_ !=null){
         DatabaseReference newUserRef = FirebaseDatabase.instance.reference().child('motorista/${user_.uid}');
         Map userMap = {
@@ -130,7 +544,7 @@ class Autenticacao{
 
         });
       }
-
+  */
 
 
     } catch (error) {

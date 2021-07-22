@@ -1095,7 +1095,7 @@ class _AddNewVehicalState extends State<AddNewVehical> {
                                               print('Carro disponivel: ' + dataValues.value.toString());
 
                                               dataValues.value.forEach((value) {
-                                                if(value != null) {
+                                                if(value != null && value["nome"].toString() != "Elevador Externo") {
                                                   listaDeVeiculo.add(value["nome"].toString() + "     h:" + value["alturaMax"].toString() + "     c:" + value["comprimentoMax"].toString() + "     " + value["custo"].toString() + "€/hora");
                                                 }
                                               });
