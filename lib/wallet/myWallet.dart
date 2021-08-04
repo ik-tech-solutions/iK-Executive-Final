@@ -414,7 +414,7 @@ class _MyWalletState extends State<MyWallet> {
                             backgroundColor: Theme.of(context).primaryColor,
                             radius: 24,
                             child: Text(
-                              "Taxa", style: TextStyle( color: ConstanceData.secoundryFontColor)
+                              "Taxa iK", style: TextStyle( color: ConstanceData.secoundryFontColor, fontSize: 10)
                              ,
                             ),
                           ),

@@ -254,7 +254,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
 
     });
 
-    setPolylines();
+    // setPolylines();
   }
 
   void setTrack(double lat, double log) async {
@@ -264,6 +264,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
       'latitude': lat,
       'longitude': log,
       'ikatoken' : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).token_motorista,
+      'status' : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).estado,
       'date': DateTime.now().toString().substring(0,16)
     };
 
@@ -686,7 +687,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
         width: MediaQuery.of(context).size.width * 0.75 < 400 ? MediaQuery.of(context).size.width * 0.75 : 350,
         child: Drawer(
           child: AppDrawer(
-            selectItemName: 'ENTREGANDO',
+            selectItemName: 'EM EXECUÇÃO',
           ),
         ),
       ),

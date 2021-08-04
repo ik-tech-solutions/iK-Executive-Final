@@ -208,7 +208,7 @@ class _PickupScreenState extends State<PickupScreen> {
 
     });
 
-    setPolylines();
+    // setPolylines();
   }
 
   @override
@@ -237,6 +237,7 @@ class _PickupScreenState extends State<PickupScreen> {
       'latitude': lat,
       'longitude': log,
       'ikatoken' : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).token_motorista,
+      'status' : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).estado,
       'date': DateTime.now().toString().substring(0,16)
     };
 
@@ -632,7 +633,6 @@ class _PickupScreenState extends State<PickupScreen> {
                       compassEnabled: true,
                       tiltGesturesEnabled: false,
                       markers: _markers,
-                      polylines: _polylines,
                       mapType: maptype,
                       initialCameraPosition: _initialcameraposition,
                       onMapCreated: onMapCreated,

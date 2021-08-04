@@ -1193,7 +1193,7 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of('ESTADO'),
+                  AppLocalizations.of('ESTADO DO SERVIÇO'),
                   style: Theme.of(context).textTheme.overline.copyWith(
                     color: Theme.of(context).disabledColor,
                     fontWeight: FontWeight.bold,
@@ -1205,7 +1205,7 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
                 ),
 
                 Text(
-                  AppLocalizations.of(logistica.estado == "pendente" ? "PENDENTE" : logistica.estado == "em execução" ? "INDO A RECOLHA" : logistica.estado == "entregando" ? "INDO A ENTREGA" : logistica.estado == "concluido" ? "CONCLUÍDO" : logistica.estado ),
+                  AppLocalizations.of(logistica.estado == "pendente" ? "PENDENTE" : logistica.estado == "em execução" ? "A CAMINHO DO LOCAL DE RECOLHA" : logistica.estado == "entregando" ? "EM EXECUÇÃO" : logistica.estado == "concluido" ? "CONCLUÍDO" : logistica.estado ),
                   style: Theme.of(context).textTheme.caption.copyWith(
                     fontWeight: FontWeight.bold,
                     color: logistica.estado == "pendente" ? Colors.red[500] : logistica.estado == "em execução" ? Colors.blue[500] : logistica.estado == "entregando" ? Colors.green : logistica.estado == "concluido" ? Colors.green : Theme.of(context).textTheme.headline6.color,
