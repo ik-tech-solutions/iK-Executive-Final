@@ -1,6 +1,7 @@
 library  login_view;
 
 import 'package:animator/animator.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 import 'package:my_cab_driver/app/features/authentication/views/screens/authentication_screen.dart';
@@ -33,6 +34,7 @@ class LoginScreen extends StatelessWidget {
 
    final phoneNumber = TextEditingController();
    final isLoading = false.obs;
+   String countryCode = "+351";
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +97,7 @@ class LoginScreen extends StatelessWidget {
         onPressed: isLoading.value ? null : () async => {
           if (formKey.currentState.validate())  {
             isLoading.value = true,
-            await UserServices.phoneNumberExists(phoneNumber.text.trim(),
+            await UserServices.phoneNumberExists(countryCode+phoneNumber.text.trim(),
                 onError: (_) {
                   isLoading.value = false;
                 }).then((exist) {
@@ -105,13 +107,13 @@ class LoginScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AuthenticationScreen(telefoneEmVerificacao: phoneNumber.text),
+                    builder: (context) => AuthenticationScreen(telefoneEmVerificacao: countryCode+phoneNumber.text),
                   ),
                 );
 
-                print("Numero ======= Existe ===== " + phoneNumber.text);
+                print("Numero ======= Existe ===== " + countryCode+phoneNumber.text);
               } else {
-                print("Numero ======= Não Existe===== " + phoneNumber.text);
+                print("Numero ======= Não Existe===== " + countryCode+phoneNumber.text);
 
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -129,7 +131,7 @@ class LoginScreen extends StatelessWidget {
             ? SizedBox(
           width: 30,
           height: 30,
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Colors.white,),
         )
             : Text("Login"),
       ),
@@ -139,20 +141,61 @@ class LoginScreen extends StatelessWidget {
   Widget inputNumber(BuildContext context){
     return Form(
       key: formKey,
-      child: TextFormField(
-        controller: phoneNumber,
-        keyboardType: TextInputType.phone,
-        validator: (value) {
-          if (value == null || value.trim() == "") return "";
-          return null;
-        },
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone,
-              color: Colors.grey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 80,
+              height: 40,
+              child: CountryCodePicker(
+                onChanged: (e) {
+                  print(e.toLongString());
+                  print(e.name);
+                  print(e.code);
+                  print(e.dialCode);
+                  // setState(() {
+                  countryCode = e.dialCode;
+                  // });
+                },
+                initialSelection: 'PT',
+                showFlagMain: true,
+                showFlag: true,
+                favorite: ['+351','PT'],
+              ),
             ),
-            hintText: "Número de telefone"),
+            Container(
+              color: Theme.of(context).dividerColor,
+              height: 32,
+              width: 1,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 0, right: 16),
+                child: Container(
+                  height: 38,
+                  child: TextFormField(
+                    controller: phoneNumber,
+                    keyboardType: TextInputType.phone,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.trim() == "") return "";
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      // prefixIcon: Icon(
+                      //   Icons.phone,
+                      //   color: Colors.grey,
+                      // ),
+                        hintText: "  Número de telefone"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+
     );
   }
 
@@ -160,7 +203,7 @@ class LoginScreen extends StatelessWidget {
      Navigator.push(
        context,
        MaterialPageRoute(
-         builder: (context) => RegistrationScreen(telefoneEmVerificacao: phoneNumber.text),
+         builder: (context) => RegistrationScreen(telefoneEmVerificacao: countryCode+phoneNumber.text),
        ),
      );
    }

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:my_cab_driver/Language/appLocalizations.dart';
 import 'package:my_cab_driver/constance/constance.dart';
 import 'package:my_cab_driver/drawer/drawer.dart';
+import 'package:my_cab_driver/home/aceptedRouteDetail.dart';
+import 'package:my_cab_driver/home/rotasPendentesList.dart';
 import 'package:my_cab_driver/wallet/add_event.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,9 @@ class AgendaState extends State<Agenda> {
   TextEditingController _dataDoEventoController;
   bool processing;
   CalendarController _controller;
+
+  String _subjectText = '', _startTimeText = '', _endTimeText = '', _dateText = '',_timeDetails = '', _logistica_key = '';
+  Color _headerColor, _viewHeaderColor, _calendarColor;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -128,30 +133,82 @@ class AgendaState extends State<Agenda> {
     );
   }
 
+  void calendarTapped(CalendarTapDetails details) {
+    if (details.targetElement == CalendarElement.appointment || details.targetElement == CalendarElement.agenda) {
 
+      final Meeting appointmentDetails = details.appointments[0];
 
+      _subjectText = appointmentDetails.eventName;
+      _logistica_key = appointmentDetails.resourceId;
 
-  Widget _buildBottomPicker(Widget picker) {
-    return Container(
-      height: 240,
-      padding: const EdgeInsets.only(top: 6.0),
-      color: CupertinoColors.white,
-      child: DefaultTextStyle(
-        style: const TextStyle(
-          color: CupertinoColors.black,
-          fontSize: 20,
-        ),
-        child: GestureDetector(
-          onTap: () {},
-          child: SafeArea(
-            top: false,
-            child: picker,
+     _dateText = DateFormat('MMMM dd, yyyy').format(appointmentDetails.from).toString();
+     _startTimeText = DateFormat('hh:mm a').format(appointmentDetails.from).toString();
+     _endTimeText = DateFormat('hh:mm a').format(appointmentDetails.to).toString();
+
+   if (appointmentDetails.isAllDay) {
+  _timeDetails = 'All day';
+     } else {
+    _timeDetails = '$_startTimeText - $_endTimeText';
+ }
+
+      _logistica_key != '0001' ?    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RotaAceitaScreean(
+            logisticaKey: _logistica_key,
           ),
         ),
-      ),
-    );
-  }
+      )
+          :
 
+  showDialog(
+    context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+     title: Container(child: new Text('$_subjectText')),
+     content: Container(
+  height: 80,
+   child: Column(
+   children: <Widget>[
+ Row(
+   children: <Widget>[
+    Text(
+    '$_dateText',
+   style: TextStyle(
+   fontWeight: FontWeight.w400,
+    fontSize: 20,
+    ),
+     ),
+ ],
+    ),
+     Row(
+    children: <Widget>[
+   Text(''),
+     ],
+    ),
+    Row(
+     children: <Widget>[
+     Text(_timeDetails,
+     style: TextStyle(
+   fontWeight: FontWeight.w400, fontSize: 15)),
+   ],
+     )
+     ],
+   ),
+     ),
+  actions: <Widget>[
+   new FlatButton(
+     onPressed: () {
+    Navigator.of(context).pop();
+     },
+     child: new Text('Fechar')),
+
+
+    ],
+    );
+   });
+  }
+  }
 
   _showCalendar() {
     if (querySnapshot != null) {
@@ -185,6 +242,11 @@ class AgendaState extends State<Agenda> {
             controller: _controller,
             initialDisplayDate: DateTime(today.year, today.month, today.day, 9, 0, 0),
             monthViewSettings: MonthViewSettings(showAgenda: true),
+            onTap: calendarTapped,
+            timeSlotViewSettings: TimeSlotViewSettings(
+                timeFormat: 'H'
+            ),
+
           );
 
       }
@@ -200,9 +262,16 @@ class AgendaState extends State<Agenda> {
         initialDisplayDate: DateTime(today.year, today.month, today.day, 9, 0, 0),
         dataSource: _getCalendarDataSource(collection),
         monthViewSettings: MonthViewSettings(showAgenda: true),
+        onTap: calendarTapped,//funcional
+        timeSlotViewSettings: TimeSlotViewSettings(
+            timeFormat: 'H'
+        ),
       );
+
+
     }
   }
+
 
   void _initializeEventColor() {
     this._colorCollection = new List<Color>();

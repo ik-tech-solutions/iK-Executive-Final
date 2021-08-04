@@ -32,6 +32,7 @@ class LogisticaExtra{
   String inicio;
   String tipoDeCasa;
   String custo_da_distancia;
+  String regiao;
   List<dynamic> servico_adicional;
   List<dynamic> artigos;
 
@@ -68,7 +69,8 @@ class LogisticaExtra{
     this.inicio,
     this.tipoDeCasa,
     this.custo_da_distancia,
-    this.uidCliente
+    this.uidCliente,
+    this.regiao
   });
 
   LogisticaExtra.fromSnapshot(DataSnapshot snapshot){
@@ -105,6 +107,7 @@ class LogisticaExtra{
      tipoDeCasa     = snapshot.value['tipo_casa'];
      custo_da_distancia     = snapshot.value['custo_da_distancia'];
      uidCliente     = snapshot.value['id_usuario'];
+     regiao     = snapshot.value['regiao'];
   }
 
 }

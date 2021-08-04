@@ -211,7 +211,9 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
                         ),
                       ),
                       contact(),
-                      pickup(),
+
+                      logistica.estado != "concluido" ?
+                      pickup() : Text(""),
 
                     ],
                   ),
@@ -852,6 +854,8 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
               ),
 
             ),
+
+            logistica.estado != "concluido" ?
             Container(
               height: 40,
               width: 140,
@@ -979,7 +983,7 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
                 ),
               ),
 
-            ),
+            ) : Text(""),
           ],
         ),
       ),
@@ -1195,15 +1199,18 @@ class _RotaAceitaScreeanState extends State<RotaAceitaScreean> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 SizedBox(
                   height: 4,
                 ),
+
                 Text(
-                  AppLocalizations.of(logistica.estado),
+                  AppLocalizations.of(logistica.estado == "pendente" ? "PENDENTE" : logistica.estado == "em execução" ? "INDO A RECOLHA" : logistica.estado == "entregando" ? "INDO A ENTREGA" : logistica.estado == "concluido" ? "CONCLUÍDO" : logistica.estado ),
                   style: Theme.of(context).textTheme.caption.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.headline6.color,
+                    color: logistica.estado == "pendente" ? Colors.red[500] : logistica.estado == "em execução" ? Colors.blue[500] : logistica.estado == "entregando" ? Colors.green : logistica.estado == "concluido" ? Colors.green : Theme.of(context).textTheme.headline6.color,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

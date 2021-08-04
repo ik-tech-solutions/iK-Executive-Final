@@ -9,6 +9,7 @@ class Usuario{
   String token;
   String status;
   String device_id;
+  String company_key;
 
   Usuario({
     this.email,
@@ -19,6 +20,7 @@ class Usuario{
     this.token,
     this.status,
     this.device_id,
+    this.company_key,
   });
 
   Usuario.fromSnapshot(DataSnapshot snapshot){
@@ -30,5 +32,6 @@ class Usuario{
     token = snapshot.value['token'];
     device_id = snapshot.value['device_token'];
     status = snapshot.value['status'];
+    company_key = snapshot.value['company_key'];
   }
 }

@@ -57,6 +57,7 @@ final horasDeTrabalhoComAumento = [
 List<Prediction> coletaPredictionList = [];
 List<Prediction> entregaPredictionList = [];
 List<String> listaDeVeiculo = [];
+List<String> listaDeLocaisDeActuacao = [];
 
 List<String> listaDeAlturaVeiculo = [];
 List<String> listaDeCustoVeiculo = [];
@@ -148,6 +149,7 @@ String home_check_LogisticKey;
 
 String custoDoServicoAdiconalMetodos;
 String ganhoTotal;
+String taxa_da_plataforma_total;
 String duracaoDoTrabalho;
 String carroSugerido;
 String maiorAltura;

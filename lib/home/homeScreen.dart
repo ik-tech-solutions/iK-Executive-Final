@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int lDisponivelInt = 0;
 
   @override
-  initState() {
+  initState()  {
     super.initState();
     final FirebaseAuth authFB = FirebaseAuth.instance;
     currentUserInfo = HelperMethods.getUsuario((authFB.currentUser).uid);
@@ -50,6 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
     HelperMethods.getTiposDeCasas();
     HelperMethods.getTermosContactos();
     // getLoc();
+
+     FirebaseDatabase.instance.reference().child('motorista/${authFB.currentUser.uid}/perfil/modo').once().then((DataSnapshot snapshot) => {
+      print("New no INIT ----------------=========------------ Novo estado: " + snapshot.value.toString()),
+
+    //  Verifcar o ultimo estado: Online ou Offline
+      snapshot.value.toString() == "online" ? isOffline = true : isOffline = false,
+
+    });
   }
 
   BitmapDescriptor bitmapDescriptorStartLocation;
@@ -69,7 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
 
-        posicaoActual = l;
+      print("Coordenadas para actual localizacao ---------------------------------" + l.toString());
+      _currentPosition = l;
+      setHomeTrack(l.latitude, l.longitude); //guardar no banco de dados a actual localizacao do driver
+      print("Coordenadas para actual localizacao ---------------------------------" + _currentPosition.toString());
+
+      posicaoActual = l;
 
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -80,6 +93,19 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       // setMapStyle();
     });
+  }
+
+  void setHomeTrack(double lat, double log) async {
+    DatabaseReference trackRef = await FirebaseDatabase.instance.reference().child('motorista/${authFB.currentUser.uid}');
+
+    Map rastreioMap = {
+      'latitude': lat,
+      'longitude': log,
+      'date': DateTime.now().toString().substring(0,16)
+    };
+
+    trackRef.child('track').set(rastreioMap);
+
   }
 
   @override
@@ -162,13 +188,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Switch(
                     activeColor: Theme.of(context).primaryColor,
                     value: isOffline,
-                    onChanged: (bool value) {
-                      setState(() {
+                    onChanged: (bool value) async {
+
+                      setState(()  {
                         isOffline = !isOffline;
 
                         DatabaseReference estadoDriverFB = FirebaseDatabase.instance.reference().child('motorista/${authFB.currentUser.uid}/perfil/modo');
                         estadoDriverFB.set(isOffline == true? "online" : "offline");
 
+                      });
+
+                      await FirebaseDatabase.instance.reference().child('motorista/${authFB.currentUser.uid}/perfil/modo').once().then((DataSnapshot snapshot) => {
+                        print("New ----------------=========------------ Novo estado: " + snapshot.value.toString()),
+                        print ("Estado: " + isOffline.toString()),
                       });
                     },
                   ),

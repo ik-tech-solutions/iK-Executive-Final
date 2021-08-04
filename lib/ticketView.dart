@@ -558,7 +558,7 @@ class _TicketDesignState extends State<TicketDesign> {
                                                         "StartTime": logistica.data,
                                                         "EndTime": logistica.data,
                                                         "Subject": "Entrega da encomenda de ${logistica.remetente}",
-                                                        "ResourceId": '0001'
+                                                        "ResourceId": '${widget.logisticaKey}'
                                                       });
 
                                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

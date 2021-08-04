@@ -75,6 +75,7 @@ class _RiderListState extends State<RiderList> {
                         logistica.preco             = values["custo"];
                         logistica.data              = values["data_envio"];
                         logistica.remetente         = values["nome_usuario"];
+                        logistica.regiao         = values["regiao"];
 
 
                       });
@@ -113,6 +114,7 @@ class _RiderListState extends State<RiderList> {
                                     logistica.latitudeEntrega  = listaLogistica[index]["latitude_destino"];
                                     logistica.longitudeEntrega = listaLogistica[index]["longitude_destino"];
                                     logistica.referencia = listaLogistica[index]["referencia"];
+                                    logistica.regiao = listaLogistica[index]["regiao"];
 
 
                                     Navigator.push(
@@ -120,15 +122,6 @@ class _RiderListState extends State<RiderList> {
                                     MaterialPageRoute(
                                     builder: (context) => TicketDesign(
                                         logisticaKey: listaLogistica[index]["key"],
-                                    // custo     : listaLogistica[index]["custo"],
-                                    // taxaDeCobranca  : listaLogistica[index]["taxa_cobranca"],
-                                    // taxaDeEnvio : listaLogistica[index]["taxa_envio"],
-                                    // motorista  : listaLogistica[index]["nome_motorista"],
-                                    // tokenMotorista : listaLogistica[index]["token_motorista"],
-                                    // servicoAdicional  : listaLogistica[index]["servico_adicional"],
-                                    // tipo : listaLogistica[index]["tipo"],
-                                    // tipoDeCasa  : listaLogistica[index]["tipo_casa"],
-                                    // destinatario  : listaLogistica[index]["destinatario"],
                                     ),
                                     ),
                                     );
@@ -174,6 +167,16 @@ class _RiderListState extends State<RiderList> {
                                                   color: Theme.of(context).textTheme.subtitle2.color,
                                                 ),
                                               ),
+                                              Text(
+                                                AppLocalizations.of(listaLogistica[index]['regiao'] == null ? "" : listaLogistica[index]['regiao']),
+                                                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context).primaryColor
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
                                               SizedBox(
                                                 height: 4,
                                               ),
@@ -187,6 +190,7 @@ class _RiderListState extends State<RiderList> {
                                               SizedBox(
                                                 height: 4,
                                               ),
+
                                               Row(
                                                 children: <Widget>[
                                                   Container(

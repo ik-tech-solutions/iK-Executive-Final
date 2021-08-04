@@ -29,6 +29,7 @@ class Metodos {
       String placa,
       String cor,
       String classe,
+      String local_actuacao,
       String transportadora,
       String NIF) {
     DatabaseReference carRef = FirebaseDatabase.instance
@@ -43,6 +44,7 @@ class Metodos {
       'modelo': modelo,
       'ano': ano,
       'placa': placa,
+      'local_actuacao': local_actuacao,
       'cor': cor,
       'classe': classe,
       'transportadora': transportadora,
@@ -132,6 +134,7 @@ class Metodos {
     routeRef.child('id_motorista').set(currentUserInfo.id);
     routeRef.child('nome_motorista').set(currentUserInfo.nomecompleto);
     routeRef.child('token_motorista').set(currentUserInfo.token);
+    routeRef.child('company_key').set(currentUserInfo.company_key);
 
     DatabaseReference chatRef =
     FirebaseDatabase.instance.reference().child('chat');
@@ -142,7 +145,7 @@ class Metodos {
           currentUserInfo.token +
           ", irei fazer a entrega da sua encomenda.",
       'type_user': 'driver',
-      'date': DateTime.now().toString()
+      'date': DateTime.now().toString().substring(0,16)
     };
     chatRef.child(logisticaKey).push().set(messageMap);
 
@@ -163,6 +166,7 @@ class Metodos {
     routeRef.child('id_motorista').set(currentUserInfo.id);
     routeRef.child('nome_motorista').set(currentUserInfo.nomecompleto);
     routeRef.child('token_motorista').set(currentUserInfo.token);
+    routeRef.child('company_key').set(currentUserInfo.company_key);
 
     DatabaseReference chatRef =
     FirebaseDatabase.instance.reference().child('chat');
@@ -196,6 +200,7 @@ class Metodos {
     routeRef.child('id_motorista').set("aguardando");
     routeRef.child('nome_motorista').set("aguardando");
     routeRef.child('token_motorista').set("aguardando");
+    routeRef.child('company_key').set("aguardando");
 
     DatabaseReference chatRef =
     FirebaseDatabase.instance.reference().child('chat');
@@ -354,8 +359,10 @@ class Metodos {
 
           await carteiraRef.once().then((DataSnapshot snapshot3) => {
             ganhoTotal = snapshot3.value['ganho_total'].toString(),
+            taxa_da_plataforma_total = snapshot3.value['taxa_total'].toString(),
           });
-          print("Carteira 111: =========================" + ganhoTotal);
+          print("Carteira - Ganho Total: =========================" + ganhoTotal);
+          print("Carteira - Taxa da Plataforma Total: =========================" + taxa_da_plataforma_total);
           //End Carteira
 
           Future.delayed(const Duration(seconds: 3), () async {
@@ -465,9 +472,9 @@ class Metodos {
             }
             //Elevador no minimo opera em 3 horas
             if (logisticaEspecifica.carro == "Elevador Externo") {
-              if (HorasFinais <= 3) {
+              if (HorasFinais <= 2) {
                 custo_por_hora_servico =
-                    double.parse(logisticaEspecifica.preco) * 3;
+                    double.parse(logisticaEspecifica.preco) * 2;
               }
             }
 
@@ -528,6 +535,8 @@ class Metodos {
             double custo_global_novo =
                 double.parse(ganhoTotal) + custo_total_provisorio;
 
+            double taxa_da_plataforma = double.parse(taxa_da_plataforma_total) + custo_da_empresa;
+
             print(
                 "TOTALLLLLLLLLLLLLLLLLLLLLLL+++++++++++++++++++++++++++++++++++++" +
                     custo_total_provisorio.toString());
@@ -537,7 +546,10 @@ class Metodos {
             routeRef
                 .child('pagamento')
                 .set(custo_total_provisorio.toString() + "€");
+
+            //Carteira do Motorista
             carteiraRef.child("ganho_total").set(custo_global_novo.toString());
+            carteiraRef.child("taxa_total").set(taxa_da_plataforma.toString());
 
             //  Salvando o Pagamento da Empresa IK Tech
             adminRef.child("total").set(custo_total_provisorio.toString());

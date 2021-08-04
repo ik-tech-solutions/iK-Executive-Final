@@ -20,6 +20,9 @@ class _AddNewVehicalState extends State<AddNewVehical> {
   String dropdownValueClasseDeCarro = "Escolha a sua classe";
   List <String> spinnerItemClasseDeCarro = [];
 
+  String dropdownValueLocalDeActuacao= "Local de actuaçāo";
+  List <String> spinnerItemLocalDeActuacao= [];
+
   final FirebaseAuth authFB = FirebaseAuth.instance;
 
   var txtmodelo = TextEditingController();
@@ -1057,6 +1060,99 @@ class _AddNewVehicalState extends State<AddNewVehical> {
                                       ),
                                     ),
                                   ),
+
+                                  SizedBox(
+                                    height: 14,
+                                  ),
+
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        AppLocalizations.of('Escolha o seu local de actuaçāo'),
+                                        style: Theme.of(context).textTheme.caption.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).disabledColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      border: Border.all(
+                                          color: Theme.of(context).dividerColor),
+                                      color: Theme.of(context).backgroundColor,
+                                    ),
+                                    child: StreamBuilder(
+                                        stream: FirebaseDatabase.instance.reference().child("regioes").onValue,
+                                        builder: (context, AsyncSnapshot<Event> snapshot) {
+                                          if (snapshot.hasData) {
+                                            listaDeLocaisDeActuacao.clear();
+                                            listaDeLocaisDeActuacao.add("Local de actuaçāo");
+                                            DataSnapshot dataValues = snapshot.data.snapshot;
+                                            // Map<dynamic, dynamic> values = dataValues.value;
+                                            if(dataValues.value != null){
+
+                                              print('Local disponivel ======= : ' + dataValues.value.toString());
+
+                                              dataValues.value.forEach((value) {
+                                                if(value != null) {
+                                                  listaDeLocaisDeActuacao.add(value["nome"].toString() );
+                                                }
+                                              });
+                                              return DropdownButton<String>(
+                                                value: dropdownValueLocalDeActuacao,
+                                                icon: Icon(Icons.arrow_drop_down),
+                                                iconSize: 24,
+                                                elevation: 16,
+                                                style: TextStyle(color: Colors.black, fontSize: 12.2),
+                                                underline: Container(
+                                                  height: 2,
+                                                ),
+                                                onChanged: (String data) {
+                                                  setState(() {
+                                                    dropdownValueLocalDeActuacao = data;
+                                                    print("1: "+ data);
+                                                    print("2: "+ listaDeLocaisDeActuacao[0]);
+                                                    print("3: "+ dropdownValueLocalDeActuacao);
+                                                  });
+                                                },
+                                                items: listaDeLocaisDeActuacao.map<DropdownMenuItem<String>>((String value) {
+                                                  return DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(left: 20),
+                                                        child: Center(
+                                                          child: Text(value, textAlign: TextAlign.center ),
+                                                        ),
+                                                      ));
+                                                }).toList(),
+                                              );
+
+                                            } else {
+                                              return Center( child: Text(
+                                                "Ocorreu um erro! Entre em contacto com a equipe de suporte",
+                                                style: Theme.of(context).textTheme.overline.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ConstanceData.secoundryFontColor,
+                                                ),
+                                              ),
+                                              );
+                                            }
+                                          }
+                                          return Center( child: CircularProgressIndicator());
+                                        }),
+
+
+
+                                  ),
+
+
+
+
+
                                   SizedBox(
                                     height: 14,
                                   ),
@@ -1243,7 +1339,7 @@ class _AddNewVehicalState extends State<AddNewVehical> {
                                                     return;
                                                   } else {
                                                     Center( child: showLoaderDialog(context));
-                                                    Metodos.carRegisterRequest(context, authFB.currentUser.uid, txtmarca.text, txtmodelo.text, txtano.text, txtplaca.text, txtcor.text, dropdownValueClasseDeCarro, txttransportadora.text, txtnif.text);
+                                                    Metodos.carRegisterRequest(context, authFB.currentUser.uid, txtmarca.text, txtmodelo.text, txtano.text, txtplaca.text, txtcor.text, dropdownValueClasseDeCarro, dropdownValueLocalDeActuacao, txttransportadora.text, txtnif.text);
 
                                                   }
 

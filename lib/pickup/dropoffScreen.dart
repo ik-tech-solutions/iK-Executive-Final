@@ -706,712 +706,1513 @@ class _DropOffScreenState extends State<DropOffScreen> {
           // mapType(),
           mostrarArtigos(),
           mostrarServicosJaExistentes(),
-          logisticaEspecifica.pagamento == "aguardando" ? DraggableScrollableSheet(
-            initialChildSize: 0.15,
-            minChildSize: 0.15,
-            maxChildSize: 0.9,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return  StreamBuilder(
-                  stream: FirebaseDatabase.instance.reference().child('logistica').child(widget.logisticaKey).onValue,              builder: (context, AsyncSnapshot<Event> snapshot) {
+
+          // logisticaEspecifica.pagamento == "aguardando"
+          //     ?
+          // DraggableScrollableSheet(
+          //   initialChildSize: 0.15,
+          //   minChildSize: 0.15,
+          //   maxChildSize: 0.9,
+          //   builder: (BuildContext context, ScrollController scrollController) {
+          //     return  StreamBuilder(
+          //         stream: FirebaseDatabase.instance.reference().child('logistica').child(widget.logisticaKey).onValue,              builder: (context, AsyncSnapshot<Event> snapshot) {
+          //       if (snapshot.hasData) {
+          //
+          //         DataSnapshot dataValues = snapshot.data.snapshot;
+          //         Map<dynamic, dynamic> values = dataValues.value;
+          //         if(dataValues.value != null){
+          //           values.forEach((key, values) {
+          //             logisticaEspecifica = LogisticaExtra.fromSnapshot(dataValues);
+          //
+          //             count++;
+          //             if(count == 1) {
+          //               DatabaseReference userPerfilRef = FirebaseDatabase
+          //                   .instance.reference().child(
+          //                   'cliente/${logisticaEspecifica
+          //                       .uidCliente}/perfil');
+          //               userPerfilRef.once().then((
+          //                   DataSnapshot snapshot) {
+          //                 if (snapshot.value != null) {
+          //                   clienteDaLogisitca =
+          //                       Usuario.fromSnapshot(snapshot);
+          //                   print(
+          //                       "Dados do CLientes ========================================================== " +
+          //                           clienteDaLogisitca
+          //                               .nomecompleto);
+          //
+          //
+          //                   generateExampleDocument1();
+          //                   print(
+          //                       "Dados do CLientes ========================================================== " +
+          //                           clienteDaLogisitca.telefone);
+          //
+          //
+          //                   print(
+          //                       "Dados do CLientes1111 ========================================================== " +
+          //                           clienteDaLogisitca.telefone);
+          //                 }
+          //               });
+          //             }
+          //           });
+          //           return Container(
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+          //               color: Theme.of(context).scaffoldBackgroundColor,
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                   color: AppTheme.isLightTheme ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+          //                   blurRadius: 12,
+          //                 ),
+          //               ],
+          //             ),
+          //             child: ListView(
+          //               controller: scrollController,
+          //               children: <Widget>[
+          //                 SizedBox(
+          //                   height: 8,
+          //                 ),
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(right: 80, left: 80),
+          //                   child: Container(
+          //                     height: 10,
+          //                     decoration: BoxDecoration(
+          //                       borderRadius: BorderRadius.circular(16),
+          //                       color: Colors.black12,
+          //                     ),
+          //                     child: Text("Deslize para cima", style: TextStyle(color: Colors.black, fontSize: 8), textAlign: TextAlign.center,),
+          //                   ),
+          //                 ),
+          //                 SizedBox(
+          //                   height: 16,
+          //                 ),
+          //
+          //                 //Duracao e Distancia
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(right: 14, left: 14, top: 10),
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //                     children: <Widget>[
+          //                       Column(
+          //                         children: <Widget>[
+          //                           Text(
+          //                             'Duração',
+          //                             style: Theme.of(context).textTheme.caption.copyWith(
+          //                               color: Theme.of(context).disabledColor,
+          //                               fontWeight: FontWeight.bold,
+          //                             ),
+          //                           ),
+          //                           SizedBox(
+          //                             height: 4,
+          //                           ),
+          //                           Text(
+          //                             AppLocalizations.of(tripDirectionDetails == null? "" : tripDirectionDetails.durationText),
+          //                             style: Theme.of(context).textTheme.subtitle1.copyWith(
+          //                               fontWeight: FontWeight.bold,
+          //                               color: Theme.of(context).textTheme.headline6.color,
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       Column(
+          //                         children: <Widget>[
+          //                           Text(
+          //                             AppLocalizations.of('Distância'),
+          //                             style: Theme.of(context).textTheme.caption.copyWith(
+          //                               color: Theme.of(context).disabledColor,
+          //                               fontWeight: FontWeight.bold,
+          //                             ),
+          //                           ),
+          //                           SizedBox(
+          //                             height: 4,
+          //                           ),
+          //                           Text(
+          //                             tripDirectionDetails == null? "" : tripDirectionDetails.distanceText  ,
+          //                             style: Theme.of(context).textTheme.subtitle1.copyWith(
+          //                               fontWeight: FontWeight.bold,
+          //                               color: Theme.of(context).textTheme.headline6.color,
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       Column(
+          //                         children: <Widget>[
+          //                           Text(
+          //                             AppLocalizations.of('Guia'),
+          //                             style: Theme.of(context).textTheme.caption.copyWith(
+          //                               color: Theme.of(context).disabledColor,
+          //                               fontWeight: FontWeight.bold,
+          //                             ),
+          //                           ),
+          //                           SizedBox(
+          //                             height: 4,
+          //                           ),
+          //                           Padding(
+          //                             padding: const EdgeInsets.all(2.0),
+          //                             child: Container(
+          //                               alignment: Alignment.centerRight,
+          //                               child: GestureDetector(
+          //                                 onTap: () {
+          //                                   Navigator.push(
+          //                                     context,
+          //                                     MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
+          //                                   );
+          //
+          //                                   print("Caminho do PDF: " + generatedPdfFilePath1.toString());
+          //                                   Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
+          //
+          //                                 },
+          //                                 child: Icon(
+          //                                   Icons.cloud_download_sharp,
+          //                                   color: Colors.black,
+          //                                 ),
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Divider(
+          //                   thickness: 1,
+          //                 ),
+          //
+          //                 //NAVEGACAO
+          //                 Padding(
+          //                   padding: const EdgeInsets.all(14),
+          //                   child:  InkWell(
+          //                     highlightColor: Colors.transparent,
+          //                     splashColor: Colors.transparent,
+          //                     onTap: () {
+          //
+          //
+          //                       showDialog(
+          //                         context: context,
+          //                         builder: (BuildContext context) {
+          //                           return AlertDialog(
+          //                             content: Column(
+          //                               mainAxisSize: MainAxisSize.min,
+          //                               children: <Widget>[
+          //                                 Icon(
+          //                                   Icons.navigation_outlined,
+          //                                   size: 80,
+          //                                   color: Colors.blueGrey,
+          //                                 ),
+          //                                 Text(
+          //                                   AppLocalizations.of('Navegar'),
+          //                                   style: Theme.of(context).textTheme.subtitle1.copyWith(
+          //                                     color: Theme.of(context).textTheme.subtitle1.color,
+          //                                     fontWeight: FontWeight.bold,
+          //                                   ),
+          //                                 ),
+          //                                 SizedBox(
+          //                                   height: 8,
+          //                                 ),
+          //                                 Padding(
+          //                                   padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+          //                                   child: Text(
+          //                                     AppLocalizations.of('Será direcionado para a tela de navegação, após o término do mesmo, confirme a entrega da encomenda.'),
+          //                                     style: Theme.of(context).textTheme.caption.copyWith(
+          //                                       color: Theme.of(context).disabledColor,
+          //                                       fontWeight: FontWeight.bold,
+          //                                     ),
+          //                                     textAlign: TextAlign.center,
+          //                                   ),
+          //                                 ),
+          //                                 Divider(
+          //                                   height: 0,
+          //                                 ),
+          //                                 Padding(
+          //                                   padding: const EdgeInsets.only(right: 16, left: 16),
+          //                                   child: Row(
+          //                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //                                     children: <Widget>[
+          //                                       InkWell(
+          //                                         onTap: () {
+          //                                           Navigator.pop(context);
+          //                                         },
+          //                                         child: Text(
+          //                                           AppLocalizations.of('Cancelar'),
+          //                                           style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //                                             color: Theme.of(context).disabledColor,
+          //                                             fontWeight: FontWeight.bold,
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                       Container(
+          //                                         color: Theme.of(context).dividerColor,
+          //                                         width: 0.5,
+          //                                         height: 48,
+          //                                       ),
+          //                                       InkWell(
+          //                                         onTap: () {
+          //                                           Navigator.pop(context);
+          //                                          navigateTo(double.parse(values['latitude_destino'].toString()), double.parse(values['longitude_destino'].toString()));
+          //                                         },
+          //                                         child: Container(
+          //                                           child: Text(
+          //                                             AppLocalizations.of('Navegar'),
+          //                                             style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //                                               color: Theme.of(context).primaryColor,
+          //                                               fontWeight: FontWeight.bold,
+          //                                             ),
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                 )
+          //                               ],
+          //                             ),
+          //                             contentPadding: EdgeInsets.only(top: 16),
+          //                           );
+          //                         },
+          //                       );
+          //
+          //
+          //
+          //                     },
+          //                     child: Container(
+          //                       height: 50,
+          //                       decoration: BoxDecoration(
+          //                         borderRadius: BorderRadius.circular(5),
+          //                         color: Colors.black,
+          //                       ),
+          //                       child: Center(
+          //                         child: Row(
+          //                           mainAxisAlignment: MainAxisAlignment.center,
+          //                           children: <Widget>[
+          //
+          //                             SizedBox(
+          //                               width: 80,
+          //                             ),
+          //
+          //                             Icon(
+          //                               Icons.assistant_navigation,
+          //                               color: ConstanceData.secoundryFontColor,
+          //                               size: 30,
+          //                             ),
+          //                             SizedBox(
+          //                               width: 16,
+          //                             ),
+          //
+          //
+          //                             Expanded(
+          //                               child:  Text(
+          //                                 AppLocalizations.of("Abrir navegação"),
+          //                                 style: Theme.of(context).textTheme.button.copyWith(
+          //                                   fontSize: 15,
+          //                                   fontWeight: FontWeight.bold,
+          //                                   color: Colors.white,
+          //                                 ),
+          //                               ),
+          //                             ),
+          //
+          //                             SizedBox(
+          //                               width: 10,
+          //                             )
+          //                           ],
+          //                         ),
+          //
+          //
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 Divider(
+          //                   thickness: 1,
+          //                 ),
+          //
+          //                 //Destinatario e Chat
+          //                 Padding(
+          //                   padding: EdgeInsets.only(left: 14, right: 14),
+          //                   child: Row(
+          //                     children: <Widget>[
+          //                       CircleAvatar(
+          //                         backgroundColor: Theme.of(context).primaryColor,
+          //                         radius: 22,
+          //                         child: GestureDetector(
+          //                           onTap: () {
+          //                             Navigator.push(
+          //                               context,
+          //                               MaterialPageRoute(
+          //                                 builder: (context) => ChatScreen(
+          //                                   logisticaKey : widget.logisticaKey,
+          //                                   referenciaDaLogistic : logisticaEspecifica.referencia,
+          //                                 ),
+          //                               ),
+          //                             );
+          //                           },
+          //                           child: Icon(
+          //                             Icons.question_answer,
+          //                             color: Colors.white,
+          //                           ),
+          //                         ),
+          //
+          //
+          //
+          //                       ),
+          //                       SizedBox(
+          //                         width: 50,
+          //                       ),
+          //                       SizedBox(
+          //                         width: 30,
+          //                       ),
+          //                       Column(
+          //                         crossAxisAlignment: CrossAxisAlignment.start,
+          //                         mainAxisAlignment: MainAxisAlignment.start,
+          //                         children: <Widget>[
+          //                           Text(
+          //                             AppLocalizations.of('Destinatário'),
+          //                             style: Theme.of(context).textTheme.caption.copyWith(
+          //                               fontWeight: FontWeight.bold,
+          //                               color: Theme.of(context).disabledColor,
+          //                             ),
+          //                           ),
+          //                           Text(
+          //                             AppLocalizations.of(logisticaEspecifica.destinatario),
+          //                             style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //                               fontWeight: FontWeight.bold,
+          //                               color: Theme.of(context).textTheme.headline6.color,
+          //                             ),
+          //                           )
+          //                         ],
+          //                       ),
+          //
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Divider(
+          //                   thickness: 1,
+          //                 ),
+          //
+          //                 //CONFIRMAR ENTREGA
+          //                 Padding(
+          //                   padding: const EdgeInsets.all(14),
+          //                   child: InkWell(
+          //                     highlightColor: Colors.transparent,
+          //                     splashColor: Colors.transparent,
+          //                     onTap: () {
+          //
+          //                       showDialog(
+          //                         context: context,
+          //                         builder: (BuildContext context) {
+          //                           return AlertDialog(
+          //                             content: Column(
+          //                               mainAxisSize: MainAxisSize.min,
+          //                               children: <Widget>[
+          //                                 Icon(
+          //                                   Icons.warning_amber_rounded,
+          //                                   size: 80,
+          //                                   color: Colors.blueGrey,
+          //                                 ),
+          //                                 Text(
+          //                                   AppLocalizations.of('Confirmar a entrega'),
+          //                                   style: Theme.of(context).textTheme.subtitle1.copyWith(
+          //                                     color: Theme.of(context).textTheme.subtitle1.color,
+          //                                     fontWeight: FontWeight.bold,
+          //                                   ),
+          //                                 ),
+          //                                 SizedBox(
+          //                                   height: 8,
+          //                                 ),
+          //                                 Padding(
+          //                                   padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+          //                                   child: Text(
+          //                                     AppLocalizations.of('Ao clicar em CONFIRMO, confirma que a encomenda já está no devido local de entrega.'),
+          //                                     style: Theme.of(context).textTheme.caption.copyWith(
+          //                                       color: Theme.of(context).disabledColor,
+          //                                       fontWeight: FontWeight.bold,
+          //                                     ),
+          //                                     textAlign: TextAlign.center,
+          //                                   ),
+          //                                 ),
+          //                                 Divider(
+          //                                   height: 0,
+          //                                 ),
+          //                                 Padding(
+          //                                   padding: const EdgeInsets.only(right: 16, left: 16),
+          //                                   child: Row(
+          //                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //                                     children: <Widget>[
+          //                                       InkWell(
+          //                                         onTap: () {
+          //                                           Navigator.pop(context);
+          //                                         },
+          //                                         child: Text(
+          //                                           AppLocalizations.of('Cancelar'),
+          //                                           style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //                                             color: Theme.of(context).disabledColor,
+          //                                             fontWeight: FontWeight.bold,
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                       Container(
+          //                                         color: Theme.of(context).dividerColor,
+          //                                         width: 0.5,
+          //                                         height: 48,
+          //                                       ),
+          //                                       InkWell(
+          //                                         onTap: () {
+          //
+          //                                           Metodos.completarRouteRequest(context, '${widget.logisticaKey}');
+          //
+          //                                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //                                             content: Text("processando..."),
+          //                                             duration: const Duration(seconds: 2),
+          //                                             backgroundColor: Colors.brown,
+          //                                           ));
+          //
+          //
+          //                           Future.delayed(const Duration(seconds: 2), () async {
+          //                             Navigator.pop(context);
+          //                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //                               content: Text("Nossos parabêns, conte connosco para mais trabalho!"),
+          //                               duration: const Duration(seconds: 5),
+          //                               backgroundColor: Colors.brown,
+          //                             ));
+          //
+          //                                             // Navigator.pop(context);
+          //                                             // Navigator
+          //                                             //     .pushNamedAndRemoveUntil(
+          //                                             //     context,
+          //                                             //     Routes.HOME, (Route<
+          //                                             //     dynamic> route) => false);
+          //                                           });
+          //
+          //
+          //
+          //
+          //
+          //
+          //                                           // Navigator.pushReplacement(
+          //                                           //   context,
+          //                                           //   MaterialPageRoute(
+          //                                           //     builder: (context) => HomeScreen(),
+          //                                           //   ),
+          //                                           // );
+          //
+          //
+          //
+          //                                         },
+          //                                         child: Container(
+          //                                           child: Text(
+          //                                             AppLocalizations.of('Confirmo'),
+          //                                             style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //                                               color: Theme.of(context).primaryColor,
+          //                                               fontWeight: FontWeight.bold,
+          //                                             ),
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                 )
+          //                               ],
+          //                             ),
+          //                             contentPadding: EdgeInsets.only(top: 16),
+          //                           );
+          //                         },
+          //                       );
+          //
+          //
+          //
+          //                     },
+          //                     child: Container(
+          //                       height: 40,
+          //                       decoration: BoxDecoration(
+          //                         borderRadius: BorderRadius.circular(10),
+          //                         color: Theme.of(context).primaryColor,
+          //                       ),
+          //                       child: Center(
+          //                         child: Text(
+          //                           AppLocalizations.of('CONFIRMAR A ENTREGA'),
+          //                           style: Theme.of(context).textTheme.button.copyWith(
+          //                             fontWeight: FontWeight.bold,
+          //                             color: ConstanceData.secoundryFontColor,
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 Divider(
+          //                   thickness: 1,
+          //                 ),
+          //
+          //
+          //
+          //
+          //                 // Padding(
+          //                 //   padding: const EdgeInsets.all(14),
+          //                 //   child: InkWell(
+          //                 //     highlightColor: Colors.transparent,
+          //                 //     splashColor: Colors.transparent,
+          //                 //     onTap: () {
+          //                 //
+          //                 //       Navigator.push(
+          //                 //         context,
+          //                 //         MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
+          //                 //       );
+          //                 //
+          //                 //       print("Caminho do PDF: " + generatedPdfFilePath1.toString());
+          //                 //       Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
+          //                 //
+          //                 //     },
+          //                 //     child: Container(
+          //                 //       height: 40,
+          //                 //       decoration: BoxDecoration(
+          //                 //         borderRadius: BorderRadius.circular(10),
+          //                 //         color: Colors.grey,
+          //                 //       ),
+          //                 //       child: Center(
+          //                 //         child: Text(
+          //                 //           AppLocalizations.of('GUIA DE TRANSPORTE'),
+          //                 //           style: Theme.of(context).textTheme.button.copyWith(
+          //                 //             fontWeight: FontWeight.bold,
+          //                 //             color: ConstanceData.secoundryFontColor,
+          //                 //           ),
+          //                 //         ),
+          //                 //       ),
+          //                 //     ),
+          //                 //   ),
+          //                 // ),
+          //
+          //                 //INSTRUCOES
+          //                 Padding(
+          //                   padding: EdgeInsets.only(right: 14, left: 14, top: 10),
+          //                   child: Row(
+          //                     children: <Widget>[
+          //
+          //                       SizedBox(
+          //                         width: 8,
+          //                       ),
+          //                       Text(
+          //                         AppLocalizations.of('Instruções'),
+          //                         style: Theme.of(context).textTheme.bodyText2.copyWith(
+          //                           fontWeight: FontWeight.bold,
+          //                           color: Theme.of(context).textTheme.headline6.color,
+          //                         ),
+          //                       )
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Padding(
+          //                   padding: EdgeInsets.only(left: 15, top: 10),
+          //                   child: Row(
+          //                     children: <Widget>[
+          //                       Container(
+          //                         decoration: BoxDecoration(
+          //                           borderRadius: BorderRadius.all(
+          //                             Radius.circular(8),
+          //                           ),
+          //                           color: Theme.of(context).scaffoldBackgroundColor,
+          //                         ),
+          //                         child: Padding(
+          //                           padding:
+          //                           const EdgeInsets.all(10),
+          //                           child: Container(
+          //                             child: ConstrainedBox(
+          //                               constraints: BoxConstraints(
+          //                                 minWidth: 300.0,
+          //                                 maxWidth: 300.0,
+          //                                 minHeight: 30.0,
+          //                                 maxHeight: 100.0,
+          //                               ),
+          //                               child: AutoSizeText(
+          //             HelperMethods.getLogisticaEspecifica(widget.logisticaKey).observacao,
+          //                                 style: TextStyle(fontSize: 6.0, color: Colors.black),
+          //                               ),
+          //                             ),
+          //                           ),
+          //
+          //                         ),
+          //                       ),
+          //
+          //                       SizedBox(
+          //                         width: 8,
+          //                       ),
+          //                       Expanded(
+          //                         child: Container(
+          //                           height: 1,
+          //                           width: 50,
+          //                           color: Theme.of(context).dividerColor,
+          //                         ),
+          //                       )
+          //                     ],
+          //                   ),
+          //                 ),
+          //
+          //                 //Servicos Adicionais
+          //                 Padding(
+          //                   padding: EdgeInsets.only(right: 14, left: 14, top: 10),
+          //                   child: Row(
+          //                     children: <Widget>[
+          //
+          //                       SizedBox(
+          //                         width: 8,
+          //                       ),
+          //                       Text(
+          //                         AppLocalizations.of('Itens e serviços adicionais'),
+          //                         style: Theme.of(context).textTheme.bodyText2.copyWith(
+          //                           fontWeight: FontWeight.bold,
+          //                           color: Theme.of(context).textTheme.headline6.color,
+          //                         ),
+          //                       )
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Padding(
+          //                   padding: EdgeInsets.only(left: 15, top: 10),
+          //                   child: Row(
+          //                     children: <Widget>[
+          //
+          //                       Container(
+          //                         decoration: BoxDecoration(
+          //                           borderRadius: BorderRadius.all(
+          //                             Radius.circular(8),
+          //                           ),
+          //                           color: Theme.of(context).scaffoldBackgroundColor,
+          //                         ),
+          //                         child: Padding(
+          //                           padding:
+          //                           const EdgeInsets.all(10),
+          //                           child: Container(
+          //                             child: ConstrainedBox(
+          //                               constraints: BoxConstraints(
+          //                                 minWidth: 300.0,
+          //                                 maxWidth: 300.0,
+          //                                 minHeight: 30.0,
+          //                                 maxHeight: 100.0,
+          //                               ),
+          //                               child: AutoSizeText(
+          //                                 HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional == null ?
+          //                                 "Nenhum serviço adicional" : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional.toString(),
+          //                                 style: TextStyle(fontSize: 6.0, color: Colors.black),
+          //                               ),
+          //                             ),
+          //                           ),
+          //
+          //                         ),
+          //                       ),
+          //
+          //                       SizedBox(
+          //                         width: 8,
+          //                       ),
+          //                       Expanded(
+          //                         child: Container(
+          //                           height: 1,
+          //                           width: 50,
+          //                           color: Theme.of(context).dividerColor,
+          //                         ),
+          //                       )
+          //                     ],
+          //                   ),
+          //                 ),
+          //
+          //                 SizedBox(
+          //                   height: MediaQuery.of(context).padding.bottom + 16,
+          //                 ),
+          //               ],
+          //             ),
+          //           );
+          //
+          //         } else {
+          //           return Center( child:Text(
+          //             AppLocalizations.of('Sem detalhes'),
+          //             style: Theme.of(context).textTheme.subtitle2.copyWith(
+          //               fontWeight: FontWeight.normal,
+          //               color: Colors.black,
+          //             ),
+          //           )
+          //           );
+          //         }
+          //       }
+          //       return Center( child: CircularProgressIndicator());
+          //     });
+          //
+          //   },
+          // )
+          //     :
+          // Column(
+          //   children: <Widget>[
+          //     // offLineMode(),
+          //     Expanded(
+          //       child: SizedBox(),
+          //     ),
+          //     mapType(),
+          //     // myLocation(),
+          //     SizedBox(
+          //       height: 50,
+          //     ),
+          //
+          //     detalhesDaRota(),
+          //     // offLineModeDetail(),
+          //     Container(
+          //       height: MediaQuery.of(context).padding.bottom,
+          //       color: Theme.of(context).scaffoldBackgroundColor,
+          //     ),
+          //
+          //   ],
+          // ),
+
+          StreamBuilder(
+              stream: FirebaseDatabase.instance.reference().child('logistica').child(widget.logisticaKey).onValue,
+              builder: (context, AsyncSnapshot<Event> snapshot) {
                 if (snapshot.hasData) {
 
                   DataSnapshot dataValues = snapshot.data.snapshot;
                   Map<dynamic, dynamic> values = dataValues.value;
                   if(dataValues.value != null){
+                    logisticaEspecifica = LogisticaExtra.fromSnapshot(dataValues);
                     values.forEach((key, values) {
-                      logisticaEspecifica = LogisticaExtra.fromSnapshot(dataValues);
-
-                      count++;
-                      if(count == 1) {
-                        DatabaseReference userPerfilRef = FirebaseDatabase
-                            .instance.reference().child(
-                            'cliente/${logisticaEspecifica
-                                .uidCliente}/perfil');
-                        userPerfilRef.once().then((
-                            DataSnapshot snapshot) {
-                          if (snapshot.value != null) {
-                            clienteDaLogisitca =
-                                Usuario.fromSnapshot(snapshot);
-                            print(
-                                "Dados do CLientes ========================================================== " +
-                                    clienteDaLogisitca
-                                        .nomecompleto);
 
 
-                            generateExampleDocument1();
-                            print(
-                                "Dados do CLientes ========================================================== " +
-                                    clienteDaLogisitca.telefone);
-
-
-                            print(
-                                "Dados do CLientes1111 ========================================================== " +
-                                    clienteDaLogisitca.telefone);
-                          }
-                        });
-                      }
                     });
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.isLightTheme ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
-                            blurRadius: 12,
-                          ),
-                        ],
-                      ),
-                      child: ListView(
-                        controller: scrollController,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 80, left: 80),
-                            child: Container(
-                              height: 10,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Colors.black12,
-                              ),
-                              child: Text("Deslize para cima", style: TextStyle(color: Colors.black, fontSize: 8), textAlign: TextAlign.center,),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
+                    return logisticaEspecifica.pagamento == "aguardando" ? DraggableScrollableSheet(
+                      initialChildSize: 0.15,
+                      minChildSize: 0.15,
+                      maxChildSize: 0.9,
+                      builder: (BuildContext context, ScrollController scrollController) {
+                        return  StreamBuilder(
+                            stream: FirebaseDatabase.instance.reference().child('logistica').child(widget.logisticaKey).onValue,              builder: (context, AsyncSnapshot<Event> snapshot) {
+                          if (snapshot.hasData) {
 
-                          //Duracao e Distancia
-                          Padding(
-                            padding: const EdgeInsets.only(right: 14, left: 14, top: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      'Duração',
-                                      style: Theme.of(context).textTheme.caption.copyWith(
-                                        color: Theme.of(context).disabledColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(tripDirectionDetails == null? "" : tripDirectionDetails.durationText),
-                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).textTheme.headline6.color,
-                                      ),
+                            DataSnapshot dataValues = snapshot.data.snapshot;
+                            Map<dynamic, dynamic> values = dataValues.value;
+                            if(dataValues.value != null){
+                              logisticaEspecifica = LogisticaExtra.fromSnapshot(dataValues);
+                              values.forEach((key, values) {
+
+
+                                count++;
+                                if(count == 1) {
+                                  DatabaseReference userPerfilRef = FirebaseDatabase
+                                      .instance.reference().child(
+                                      'cliente/${logisticaEspecifica
+                                          .uidCliente}/perfil');
+                                  userPerfilRef.once().then((
+                                      DataSnapshot snapshot) {
+                                    if (snapshot.value != null) {
+                                      clienteDaLogisitca =
+                                          Usuario.fromSnapshot(snapshot);
+                                      print(
+                                          "Dados do CLientes ========================================================== " +
+                                              clienteDaLogisitca
+                                                  .nomecompleto);
+
+
+                                      generateExampleDocument1();
+                                      print(
+                                          "Dados do CLientes ========================================================== " +
+                                              clienteDaLogisitca.telefone);
+
+
+                                      print(
+                                          "Dados do CLientes1111 ========================================================== " +
+                                              clienteDaLogisitca.telefone);
+                                    }
+                                  });
+                                }
+                              });
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.isLightTheme ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+                                      blurRadius: 12,
                                     ),
                                   ],
                                 ),
-                                Column(
+                                child: ListView(
+                                  controller: scrollController,
                                   children: <Widget>[
-                                    Text(
-                                      AppLocalizations.of('Distância'),
-                                      style: Theme.of(context).textTheme.caption.copyWith(
-                                        color: Theme.of(context).disabledColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
                                     SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      tripDirectionDetails == null? "" : tripDirectionDetails.distanceText  ,
-                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).textTheme.headline6.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      AppLocalizations.of('Guia'),
-                                      style: Theme.of(context).textTheme.caption.copyWith(
-                                        color: Theme.of(context).disabledColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
+                                      height: 8,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(2.0),
+                                      padding: const EdgeInsets.only(right: 80, left: 80),
                                       child: Container(
-                                        alignment: Alignment.centerRight,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
-                                            );
+                                        height: 10,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(16),
+                                          color: Colors.black12,
+                                        ),
+                                        child: Text("Deslize para cima", style: TextStyle(color: Colors.black, fontSize: 8), textAlign: TextAlign.center,),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
 
-                                            print("Caminho do PDF: " + generatedPdfFilePath1.toString());
-                                            Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
+                                    //Duracao e Distancia
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 14, left: 14, top: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          Column(
+                                            children: <Widget>[
+                                              Text(
+                                                'Duração',
+                                                style: Theme.of(context).textTheme.caption.copyWith(
+                                                  color: Theme.of(context).disabledColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(tripDirectionDetails == null? "" : tripDirectionDetails.durationText),
+                                                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context).textTheme.headline6.color,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: <Widget>[
+                                              Text(
+                                                AppLocalizations.of('Distância'),
+                                                style: Theme.of(context).textTheme.caption.copyWith(
+                                                  color: Theme.of(context).disabledColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                tripDirectionDetails == null? "" : tripDirectionDetails.distanceText  ,
+                                                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context).textTheme.headline6.color,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: <Widget>[
+                                              Text(
+                                                AppLocalizations.of('Guia'),
+                                                style: Theme.of(context).textTheme.caption.copyWith(
+                                                  color: Theme.of(context).disabledColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(2.0),
+                                                child: Container(
+                                                  alignment: Alignment.centerRight,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
+                                                      );
 
-                                          },
-                                          child: Icon(
-                                            Icons.cloud_download_sharp,
+                                                      print("Caminho do PDF: " + generatedPdfFilePath1.toString());
+                                                      Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
+
+                                                    },
+                                                    child: Icon(
+                                                      Icons.cloud_download_sharp,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
+
+                                    //NAVEGACAO
+                                    Padding(
+                                      padding: const EdgeInsets.all(14),
+                                      child:  InkWell(
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        onTap: () {
+
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.navigation_outlined,
+                                                      size: 80,
+                                                      color: Colors.blueGrey,
+                                                    ),
+                                                    Text(
+                                                      AppLocalizations.of('Navegar'),
+                                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                        color: Theme.of(context).textTheme.subtitle1.color,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+                                                      child: Text(
+                                                        AppLocalizations.of('Será direcionado para a tela de navegação, após o término do mesmo, confirme a entrega da encomenda.'),
+                                                        style: Theme.of(context).textTheme.caption.copyWith(
+                                                          color: Theme.of(context).disabledColor,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                      height: 0,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 16, left: 16),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: Text(
+                                                              AppLocalizations.of('Cancelar'),
+                                                              style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                                color: Theme.of(context).disabledColor,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            color: Theme.of(context).dividerColor,
+                                                            width: 0.5,
+                                                            height: 48,
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Navigator.pop(context);
+                                                              navigateTo(double.parse(values['latitude_destino'].toString()), double.parse(values['longitude_destino'].toString()));
+                                                            },
+                                                            child: Container(
+                                                              child: Text(
+                                                                AppLocalizations.of('Navegar'),
+                                                                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                                  color: Theme.of(context).primaryColor,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                contentPadding: EdgeInsets.only(top: 16),
+                                              );
+                                            },
+                                          );
+
+
+
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
                                             color: Colors.black,
                                           ),
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+
+                                                SizedBox(
+                                                  width: 80,
+                                                ),
+
+                                                Icon(
+                                                  Icons.assistant_navigation,
+                                                  color: ConstanceData.secoundryFontColor,
+                                                  size: 30,
+                                                ),
+                                                SizedBox(
+                                                  width: 16,
+                                                ),
+
+
+                                                Expanded(
+                                                  child:  Text(
+                                                    AppLocalizations.of("Abrir navegação"),
+                                                    style: Theme.of(context).textTheme.button.copyWith(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                SizedBox(
+                                                  width: 10,
+                                                )
+                                              ],
+                                            ),
+
+
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                          ),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
 
-                          //NAVEGACAO
-                          Padding(
-                            padding: const EdgeInsets.all(14),
-                            child:  InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-
-
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
+                                    //Destinatario e Chat
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 14, right: 14),
+                                      child: Row(
                                         children: <Widget>[
-                                          Icon(
-                                            Icons.navigation_outlined,
-                                            size: 80,
-                                            color: Colors.blueGrey,
-                                          ),
-                                          Text(
-                                            AppLocalizations.of('Navegar'),
-                                            style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                              color: Theme.of(context).textTheme.subtitle1.color,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
-                                            child: Text(
-                                              AppLocalizations.of('Será direcionado para a tela de navegação, após o término do mesmo, confirme a entrega da encomenda.'),
-                                              style: Theme.of(context).textTheme.caption.copyWith(
-                                                color: Theme.of(context).disabledColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                          Divider(
-                                            height: 0,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 16, left: 16),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text(
-                                                    AppLocalizations.of('Cancelar'),
-                                                    style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                                      color: Theme.of(context).disabledColor,
-                                                      fontWeight: FontWeight.bold,
+                                          CircleAvatar(
+                                            backgroundColor: Theme.of(context).primaryColor,
+                                            radius: 22,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => ChatScreen(
+                                                      logisticaKey : widget.logisticaKey,
+                                                      referenciaDaLogistic : logisticaEspecifica.referencia,
                                                     ),
                                                   ),
+                                                );
+                                              },
+                                              child: Icon(
+                                                Icons.question_answer,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+
+
+
+                                          ),
+                                          SizedBox(
+                                            width: 50,
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                AppLocalizations.of('Destinatário'),
+                                                style: Theme.of(context).textTheme.caption.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context).disabledColor,
                                                 ),
-                                                Container(
-                                                  color: Theme.of(context).dividerColor,
-                                                  width: 0.5,
-                                                  height: 48,
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(logisticaEspecifica.destinatario),
+                                                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context).textTheme.headline6.color,
                                                 ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                   navigateTo(double.parse(values['latitude_destino'].toString()), double.parse(values['longitude_destino'].toString()));
-                                                  },
-                                                  child: Container(
-                                                    child: Text(
-                                                      AppLocalizations.of('Navegar'),
-                                                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                                        color: Theme.of(context).primaryColor,
+                                              )
+                                            ],
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
+
+                                    //CONFIRMAR ENTREGA
+                                    Padding(
+                                      padding: const EdgeInsets.all(14),
+                                      child: InkWell(
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        onTap: () {
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.warning_amber_rounded,
+                                                      size: 80,
+                                                      color: Colors.blueGrey,
+                                                    ),
+                                                    Text(
+                                                      AppLocalizations.of('Confirmar a entrega'),
+                                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                        color: Theme.of(context).textTheme.subtitle1.color,
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
-                                                  ),
+                                                    SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
+                                                      child: Text(
+                                                        AppLocalizations.of('Ao clicar em CONFIRMO, confirma que a encomenda já está no devido local de entrega.'),
+                                                        style: Theme.of(context).textTheme.caption.copyWith(
+                                                          color: Theme.of(context).disabledColor,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                      height: 0,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 16, left: 16),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: Text(
+                                                              AppLocalizations.of('Cancelar'),
+                                                              style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                                color: Theme.of(context).disabledColor,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            color: Theme.of(context).dividerColor,
+                                                            width: 0.5,
+                                                            height: 48,
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+
+                                                              Metodos.completarRouteRequest(context, '${widget.logisticaKey}');
+
+                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                content: Text("processando..."),
+                                                                duration: const Duration(seconds: 2),
+                                                                backgroundColor: Colors.brown,
+                                                              ));
+
+
+                                                              Future.delayed(const Duration(seconds: 2), () async {
+                                                                Navigator.pop(context);
+                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                  content: Text("Nossos parabêns, conte connosco para mais trabalho!"),
+                                                                  duration: const Duration(seconds: 5),
+                                                                  backgroundColor: Colors.brown,
+                                                                ));
+
+                                                                // Navigator.pop(context);
+                                                                // Navigator
+                                                                //     .pushNamedAndRemoveUntil(
+                                                                //     context,
+                                                                //     Routes.HOME, (Route<
+                                                                //     dynamic> route) => false);
+                                                              });
+
+
+
+
+
+
+                                                              // Navigator.pushReplacement(
+                                                              //   context,
+                                                              //   MaterialPageRoute(
+                                                              //     builder: (context) => HomeScreen(),
+                                                              //   ),
+                                                              // );
+
+
+
+                                                            },
+                                                            child: Container(
+                                                              child: Text(
+                                                                AppLocalizations.of('Confirmo'),
+                                                                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                                                  color: Theme.of(context).primaryColor,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                              ],
+                                                contentPadding: EdgeInsets.only(top: 16),
+                                              );
+                                            },
+                                          );
+
+
+
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              AppLocalizations.of('CONFIRMAR A ENTREGA'),
+                                              style: Theme.of(context).textTheme.button.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: ConstanceData.secoundryFontColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
+
+
+
+
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(14),
+                                    //   child: InkWell(
+                                    //     highlightColor: Colors.transparent,
+                                    //     splashColor: Colors.transparent,
+                                    //     onTap: () {
+                                    //
+                                    //       Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
+                                    //       );
+                                    //
+                                    //       print("Caminho do PDF: " + generatedPdfFilePath1.toString());
+                                    //       Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
+                                    //
+                                    //     },
+                                    //     child: Container(
+                                    //       height: 40,
+                                    //       decoration: BoxDecoration(
+                                    //         borderRadius: BorderRadius.circular(10),
+                                    //         color: Colors.grey,
+                                    //       ),
+                                    //       child: Center(
+                                    //         child: Text(
+                                    //           AppLocalizations.of('GUIA DE TRANSPORTE'),
+                                    //           style: Theme.of(context).textTheme.button.copyWith(
+                                    //             fontWeight: FontWeight.bold,
+                                    //             color: ConstanceData.secoundryFontColor,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+
+                                    //INSTRUCOES
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 14, left: 14, top: 10),
+                                      child: Row(
+                                        children: <Widget>[
+
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            AppLocalizations.of('Instruções'),
+                                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context).textTheme.headline6.color,
                                             ),
                                           )
                                         ],
                                       ),
-                                      contentPadding: EdgeInsets.only(top: 16),
-                                    );
-                                  },
-                                );
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 15, top: 10),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.all(10),
+                                              child: Container(
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints(
+                                                    minWidth: 300.0,
+                                                    maxWidth: 300.0,
+                                                    minHeight: 30.0,
+                                                    maxHeight: 100.0,
+                                                  ),
+                                                  child: AutoSizeText(
+                                                    HelperMethods.getLogisticaEspecifica(widget.logisticaKey).observacao,
+                                                    style: TextStyle(fontSize: 6.0, color: Colors.black),
+                                                  ),
+                                                ),
+                                              ),
 
+                                            ),
+                                          ),
 
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              height: 1,
+                                              width: 50,
+                                              color: Theme.of(context).dividerColor,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
 
-                              },
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
+                                    //Servicos Adicionais
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 14, left: 14, top: 10),
+                                      child: Row(
+                                        children: <Widget>[
+
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            AppLocalizations.of('Itens e serviços adicionais'),
+                                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context).textTheme.headline6.color,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 15, top: 10),
+                                      child: Row(
+                                        children: <Widget>[
+
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.all(10),
+                                              child: Container(
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints(
+                                                    minWidth: 300.0,
+                                                    maxWidth: 300.0,
+                                                    minHeight: 30.0,
+                                                    maxHeight: 100.0,
+                                                  ),
+                                                  child: AutoSizeText(
+                                                    HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional == null ?
+                                                    "Nenhum serviço adicional" : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional.toString(),
+                                                    style: TextStyle(fontSize: 6.0, color: Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              height: 1,
+                                              width: 50,
+                                              color: Theme.of(context).dividerColor,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      height: MediaQuery.of(context).padding.bottom + 16,
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                            } else {
+                              return Center( child:Text(
+                                AppLocalizations.of('Sem detalhes'),
+                                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                                  fontWeight: FontWeight.normal,
                                   color: Colors.black,
                                 ),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
+                              )
+                              );
+                            }
+                          }
+                          return Center( child: CircularProgressIndicator());
+                        });
 
-                                      SizedBox(
-                                        width: 80,
-                                      ),
+                      },
+                    ) :  Column(
+                      children: <Widget>[
+                        // offLineMode(),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        mapType(),
+                        // myLocation(),
+                        SizedBox(
+                          height: 50,
+                        ),
 
-                                      Icon(
-                                        Icons.assistant_navigation,
-                                        color: ConstanceData.secoundryFontColor,
-                                        size: 30,
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
+                        detalhesDaRota(),
+                        // offLineModeDetail(),
+                        Container(
+                          height: MediaQuery.of(context).padding.bottom,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
 
-
-                                      Expanded(
-                                        child:  Text(
-                                          AppLocalizations.of("Abrir navegação"),
-                                          style: Theme.of(context).textTheme.button.copyWith(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-
-                                      SizedBox(
-                                        width: 10,
-                                      )
-                                    ],
-                                  ),
-
-
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                          ),
-
-                          //Destinatario e Chat
-                          Padding(
-                            padding: EdgeInsets.only(left: 14, right: 14),
-                            child: Row(
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  radius: 22,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                            logisticaKey : widget.logisticaKey,
-                                            referenciaDaLogistic : logisticaEspecifica.referencia,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.question_answer,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-
-
-
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      AppLocalizations.of('Destinatário'),
-                                      style: Theme.of(context).textTheme.caption.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).disabledColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(logisticaEspecifica.destinatario),
-                                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).textTheme.headline6.color,
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                          ),
-
-                          //CONFIRMAR ENTREGA
-                          Padding(
-                            padding: const EdgeInsets.all(14),
-                            child: InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.warning_amber_rounded,
-                                            size: 80,
-                                            color: Colors.blueGrey,
-                                          ),
-                                          Text(
-                                            AppLocalizations.of('Confirmar a entrega'),
-                                            style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                              color: Theme.of(context).textTheme.subtitle1.color,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16),
-                                            child: Text(
-                                              AppLocalizations.of('Ao clicar em CONFIRMO, confirma que a encomenda já está no devido local de entrega.'),
-                                              style: Theme.of(context).textTheme.caption.copyWith(
-                                                color: Theme.of(context).disabledColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                          Divider(
-                                            height: 0,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 16, left: 16),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text(
-                                                    AppLocalizations.of('Cancelar'),
-                                                    style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                                      color: Theme.of(context).disabledColor,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  color: Theme.of(context).dividerColor,
-                                                  width: 0.5,
-                                                  height: 48,
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-
-                                                    Metodos.completarRouteRequest(context, '${widget.logisticaKey}');
-
-                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                      content: Text("processando..."),
-                                                      duration: const Duration(seconds: 2),
-                                                      backgroundColor: Colors.brown,
-                                                    ));
-
-
-                                    Future.delayed(const Duration(seconds: 2), () async {
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                        content: Text("Nossos parabêns, conte connosco para mais trabalho!"),
-                                        duration: const Duration(seconds: 5),
-                                        backgroundColor: Colors.brown,
-                                      ));
-
-                                                      // Navigator.pop(context);
-                                                      // Navigator
-                                                      //     .pushNamedAndRemoveUntil(
-                                                      //     context,
-                                                      //     Routes.HOME, (Route<
-                                                      //     dynamic> route) => false);
-                                                    });
-
-
-
-
-
-
-                                                    // Navigator.pushReplacement(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //     builder: (context) => HomeScreen(),
-                                                    //   ),
-                                                    // );
-
-
-
-                                                  },
-                                                  child: Container(
-                                                    child: Text(
-                                                      AppLocalizations.of('Confirmo'),
-                                                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                                        color: Theme.of(context).primaryColor,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      contentPadding: EdgeInsets.only(top: 16),
-                                    );
-                                  },
-                                );
-
-
-
-                              },
-                              child: Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppLocalizations.of('CONFIRMAR A ENTREGA'),
-                                    style: Theme.of(context).textTheme.button.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: ConstanceData.secoundryFontColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                          ),
-
-
-
-
-                          // Padding(
-                          //   padding: const EdgeInsets.all(14),
-                          //   child: InkWell(
-                          //     highlightColor: Colors.transparent,
-                          //     splashColor: Colors.transparent,
-                          //     onTap: () {
-                          //
-                          //       Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(builder: (context) => PDFViewerScaffold(appBar: AppBar(title: Text("Guia de transporte: " +  HelperMethods.getLogisticaEspecifica(widget.logisticaKey).referencia)), path: generatedPdfFilePath1)),
-                          //       );
-                          //
-                          //       print("Caminho do PDF: " + generatedPdfFilePath1.toString());
-                          //       Share.shareFiles(['${generatedPdfFilePath1}'], text: 'Your PDF!');
-                          //
-                          //     },
-                          //     child: Container(
-                          //       height: 40,
-                          //       decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(10),
-                          //         color: Colors.grey,
-                          //       ),
-                          //       child: Center(
-                          //         child: Text(
-                          //           AppLocalizations.of('GUIA DE TRANSPORTE'),
-                          //           style: Theme.of(context).textTheme.button.copyWith(
-                          //             fontWeight: FontWeight.bold,
-                          //             color: ConstanceData.secoundryFontColor,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-
-                          //INSTRUCOES
-                          Padding(
-                            padding: EdgeInsets.only(right: 14, left: 14, top: 10),
-                            child: Row(
-                              children: <Widget>[
-
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of('Instruções'),
-                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).textTheme.headline6.color,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15, top: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8),
-                                    ),
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.all(10),
-                                    child: Container(
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          minWidth: 300.0,
-                                          maxWidth: 300.0,
-                                          minHeight: 30.0,
-                                          maxHeight: 100.0,
-                                        ),
-                                        child: AutoSizeText(
-                      HelperMethods.getLogisticaEspecifica(widget.logisticaKey).observacao,
-                                          style: TextStyle(fontSize: 6.0, color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    width: 50,
-                                    color: Theme.of(context).dividerColor,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-
-                          //Servicos Adicionais
-                          Padding(
-                            padding: EdgeInsets.only(right: 14, left: 14, top: 10),
-                            child: Row(
-                              children: <Widget>[
-
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of('Itens e serviços adicionais'),
-                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).textTheme.headline6.color,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 15, top: 10),
-                            child: Row(
-                              children: <Widget>[
-
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8),
-                                    ),
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.all(10),
-                                    child: Container(
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          minWidth: 300.0,
-                                          maxWidth: 300.0,
-                                          minHeight: 30.0,
-                                          maxHeight: 100.0,
-                                        ),
-                                        child: AutoSizeText(
-                                          HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional == null ?
-                                          "Nenhum serviço adicional" : HelperMethods.getLogisticaEspecifica(widget.logisticaKey).servico_adicional.toString(),
-                                          style: TextStyle(fontSize: 6.0, color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    width: 50,
-                                    color: Theme.of(context).dividerColor,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-
-                          SizedBox(
-                            height: MediaQuery.of(context).padding.bottom + 16,
-                          ),
-                        ],
-                      ),
+                      ],
                     );
 
                   } else {
@@ -1425,31 +2226,8 @@ class _DropOffScreenState extends State<DropOffScreen> {
                     );
                   }
                 }
-                return Center( child: CircularProgressIndicator());
-              });
-
-            },
-          ) :          Column(
-            children: <Widget>[
-              // offLineMode(),
-              Expanded(
-                child: SizedBox(),
-              ),
-              mapType(),
-              // myLocation(),
-              SizedBox(
-                height: 50,
-              ),
-
-              detalhesDaRota(),
-              // offLineModeDetail(),
-              Container(
-                height: MediaQuery.of(context).padding.bottom,
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-
-            ],
-          ),
+                return Center( child: CircularProgressIndicator(color: Theme.of(context).primaryColor));
+              }),
 
 
           StreamBuilder(
@@ -1460,6 +2238,7 @@ class _DropOffScreenState extends State<DropOffScreen> {
                   DataSnapshot dataValues = snapshot.data.snapshot;
                   Map<dynamic, dynamic> values = dataValues.value;
                   if(dataValues.value != null){
+                    logisticaEspecifica = LogisticaExtra.fromSnapshot(dataValues);
                     values.forEach((key, values) {
 
 

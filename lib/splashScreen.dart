@@ -144,6 +144,14 @@ class _SplashScreenState extends State<SplashScreen>
     if (firstTime != null && !firstTime) {
       prefs.setBool('first_time', false);
       if (user != null) {
+
+        //Enviar Notificação
+        PushNotificationService notification = PushNotificationService();
+        notification.initialize(context);
+        notification.getToken();
+
+
+
         DatabaseReference veiculoRegistradoRef = FirebaseDatabase.instance
             .reference()
             .child('motorista')

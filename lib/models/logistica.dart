@@ -25,9 +25,16 @@ class Logistica{
   String _tipo;
   String _carro;
   String _estado;
+  String _regiao;
   List<dynamic>  _servico_adicional;
   String _valor_inicial;
 
+
+  String get regiao => _regiao;
+
+  set regiao(String value) {
+    _regiao = value;
+  }
 
   String get valor_inicial => _valor_inicial;
 

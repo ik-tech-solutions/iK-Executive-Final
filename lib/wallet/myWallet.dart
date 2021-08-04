@@ -422,7 +422,7 @@ class _MyWalletState extends State<MyWallet> {
                             width: 50,
                           ),
                           Text(
-                            AppLocalizations.of((double.parse(userCarteira.ganho_total) * (double.parse(taxaDaEmpresa.cobranca)/100)).toStringAsFixed(2) + "€"),
+                            AppLocalizations.of(double.parse(userCarteira.taxa_total).toStringAsFixed(2)  + "€"),
                             style: Theme.of(context).textTheme.subtitle2.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,

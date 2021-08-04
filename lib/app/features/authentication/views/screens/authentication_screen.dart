@@ -62,7 +62,7 @@ class AuthenticationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Numero Na tela de Verificacao __________________________ " + this.telefoneEmVerificacao.toString() +" | " + registrant.toString() +" | " + registrant.name + " | " + registrant.email +" | " + registrant.phoneNumber );
+    //print("Numero Na tela de Verificacao __________________________ " + this.telefoneEmVerificacao.toString() +" | " + registrant.toString() +" | " + registrant.name.toString() + " | " + registrant.email.toString() +" | " + registrant.phoneNumber.toString() );
     initState(context);
     return Scaffold(
         body: CustomScrollView(
@@ -133,6 +133,9 @@ class AuthenticationScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Obx(
                         () => ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+                            ),
                         onPressed: isLoading.value
                             ? null
                             : () => verifySmsCode(context),
@@ -140,7 +143,7 @@ class AuthenticationScreen extends StatelessWidget {
                             ? SizedBox(
                           width: 30,
                           height: 30,
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(color: Colors.white,),
                         )
                             : Text("Verificar")),
                   ),
@@ -149,7 +152,8 @@ class AuthenticationScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Não recebeu o código ? "),
+                    Text("Não recebeu o código? "),
+
                     Obx(
                           () => TextButton(
                         onPressed: (isCanResendCode.value)
