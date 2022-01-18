@@ -492,7 +492,7 @@ print("Logistica ===============================" + dataValues.value.toString())
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             children: <Widget>[
                                               Text(
-                                                logistica.preco + "€/hora",
+                                                logistica.tipo_de_cliente == "ik_business" ? logistica.preco + "€" : logistica.preco + "€/hora",
                                                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   color: Theme.of(context).textTheme.headline6.color,
@@ -670,7 +670,7 @@ print("Logistica ===============================" + dataValues.value.toString())
                                                     width: 250,
                                                     child: Center(
                                                       child: Text(
-                                                        AppLocalizations.of("Sem encomendas no momento"),
+                                                        AppLocalizations.of("0 SERVIÇOS PENDENTES"),
                                                         style: Theme.of(context).textTheme.overline.copyWith(
                                                           fontWeight: FontWeight.bold,
                                                           color: ConstanceData.secoundryFontColor,

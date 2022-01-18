@@ -65,7 +65,7 @@ class AgendaState extends State<Agenda> {
         width: MediaQuery.of(context).size.width * 0.75 < 400 ? MediaQuery.of(context).size.width * 0.75 : 350,
         child: Drawer(
           child: AppDrawer(
-            selectItemName: 'Minha agenda',
+            selectItemName: 'Agenda',
           ),
         ),
       ),
@@ -116,7 +116,7 @@ class AgendaState extends State<Agenda> {
           ),
           Expanded(
             child: Text(
-              AppLocalizations.of('Minha Agenda'),
+              AppLocalizations.of('Agenda'),
               style: Theme.of(context).textTheme.headline6.copyWith(
                 fontWeight: FontWeight.bold,
                 color: ConstanceData.secoundryFontColor,
@@ -142,13 +142,14 @@ class AgendaState extends State<Agenda> {
       _logistica_key = appointmentDetails.resourceId;
 
      _dateText = DateFormat('MMMM dd, yyyy').format(appointmentDetails.from).toString();
-     _startTimeText = DateFormat('hh:mm a').format(appointmentDetails.from).toString();
-     _endTimeText = DateFormat('hh:mm a').format(appointmentDetails.to).toString();
+     // _startTimeText = DateFormat('hh:mm a').format(appointmentDetails.from).toString();
+     // _endTimeText = DateFormat('hh:mm a').format(appointmentDetails.to).toString();
 
    if (appointmentDetails.isAllDay) {
-  _timeDetails = 'All day';
+  _timeDetails = '';
      } else {
-    _timeDetails = '$_startTimeText - $_endTimeText';
+    // _timeDetails = '$_startTimeText - $_endTimeText';
+     _timeDetails = '';
  }
 
       _logistica_key != '0001' ?    Navigator.push(
@@ -224,9 +225,9 @@ class AgendaState extends State<Agenda> {
           final Random random = new Random();
           collection.add(Meeting(
               eventName: data['Subject'],
-              isAllDay: false,
-              from: DateFormat('yyyy-MM-dd HH:mm').parse(data['StartTime']),
-              to: DateFormat('yyyy-MM-dd HH:mm').parse(data['EndTime']),
+              isAllDay: true,
+              from: DateFormat('yyyy-MM-dd').parse(data['StartTime']),
+              to: DateFormat('yyyy-MM-dd').parse(data['EndTime']),
               background: _colorCollection[random.nextInt(9)],
               resourceId: data['ResourceId']));
         }
@@ -240,12 +241,9 @@ class AgendaState extends State<Agenda> {
               CalendarView.month,
             ],
             controller: _controller,
-            initialDisplayDate: DateTime(today.year, today.month, today.day, 9, 0, 0),
+            initialDisplayDate: DateTime(today.year, today.month, today.day),
             monthViewSettings: MonthViewSettings(showAgenda: true),
             onTap: calendarTapped,
-            timeSlotViewSettings: TimeSlotViewSettings(
-                timeFormat: 'H'
-            ),
 
           );
 
@@ -259,13 +257,10 @@ class AgendaState extends State<Agenda> {
           CalendarView.month,
         ],
         controller: _controller,
-        initialDisplayDate: DateTime(today.year, today.month, today.day, 9, 0, 0),
+        initialDisplayDate: DateTime(today.year, today.month, today.day),
         dataSource: _getCalendarDataSource(collection),
         monthViewSettings: MonthViewSettings(showAgenda: true),
         onTap: calendarTapped,//funcional
-        timeSlotViewSettings: TimeSlotViewSettings(
-            timeFormat: 'H'
-        ),
       );
 
 

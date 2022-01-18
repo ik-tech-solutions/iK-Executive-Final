@@ -95,6 +95,8 @@ class _TicketDesignState extends State<TicketDesign> {
               logistica.duracao           = values["duracao"];
               logistica.distancia         = values["distancia"];
               logistica.preco             = values["custo"];
+              logistica.tipo_de_cliente      = values["tipo_usuario"] == null ? "" : values["tipo_usuario"] == "ik_business" ? "ik_business" : "my_ik";
+              logistica.periodo_de_entrega   = values["periodo_entrega"] == null ? "" : values["periodo_entrega"];
               logistica.data              = values["data_envio"];
               logistica.remetente         = values["nome_usuario"];
               logistica.observacao         = values["observacao"];
@@ -140,8 +142,7 @@ class _TicketDesignState extends State<TicketDesign> {
                                                 AppLocalizations.of(logistica.remetente),
                                                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                                                   fontWeight: FontWeight.bold,
-                                                fontSize: 10),
-
+                                                  fontSize: 10),
                                               ),
                                             ),
                                             decoration: BoxDecoration(
@@ -154,11 +155,11 @@ class _TicketDesignState extends State<TicketDesign> {
                                             width: 1,
                                           ),
                                           Container(
-                                            height: 24,
+                                            height: 26,
                                             width: 150,
                                             child: Center(
                                               child: Text(
-                                                AppLocalizations.of(logistica.data),
+                                                AppLocalizations.of(logistica.periodo_de_entrega == "" ? logistica.data : logistica.data + " de " + logistica.periodo_de_entrega),
                                                 style: Theme.of(context).textTheme.overline.copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.grey,
@@ -261,7 +262,7 @@ class _TicketDesignState extends State<TicketDesign> {
                                             width: 85,
                                             child: Center(
                                               child: Text(
-                                                logistica.preco + " €/h",
+                                                logistica.tipo_de_cliente == "ik_business" ?  logistica.preco+"€" : logistica.preco + "€/h",
                                                 style: Theme.of(context).textTheme.overline.copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   color: ConstanceData.secoundryFontColor,),
@@ -549,29 +550,12 @@ class _TicketDesignState extends State<TicketDesign> {
                                                   ),
                                                   InkWell(
                                                     onTap: () async {
-                                                      // Navigator.pop(context);
-                                                      Metodos.acceptRouteRequest(context, '${widget.logisticaKey}');
 
-                                                      final dbRef =
-                                                          await FirebaseDatabase.instance.reference().child('motorista/${authFB.currentUser.uid}/calendario');
-                                                      dbRef.push().set({
-                                                        "StartTime": logistica.data,
-                                                        "EndTime": logistica.data,
-                                                        "Subject": "Entrega da encomenda de ${logistica.remetente}",
-                                                        "ResourceId": '${widget.logisticaKey}'
-                                                      });
+                                                 // Verifica e gera resultado
+                                                 Metodos.verificarOcupacaoDePeriodo(context,'${widget.logisticaKey}', logistica.data, logistica.periodo_de_entrega, logistica.tipo_de_cliente, logistica.remetente);
 
-                                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                        content: Text("Parabéns, acaba de adicionar uma encomenda na tua agenda!"),
-                                                      ));
 
-                                                      Navigator.pop(context);
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => RotasPendentesList(),
-                                                        ),
-                                                      );
+
 
                                                       // Navigator.pushReplacementNamed
 
@@ -585,6 +569,7 @@ class _TicketDesignState extends State<TicketDesign> {
                                                         ),
                                                       ),
                                                     ),
+
                                                   ),
                                                 ],
                                               ),
@@ -605,7 +590,7 @@ class _TicketDesignState extends State<TicketDesign> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      AppLocalizations.of('ACEITAR A ENCOMENDA'),
+                                      AppLocalizations.of('ACEITAR O SERVIÇO'),
                                       style: Theme.of(context).textTheme.button.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: ConstanceData.secoundryFontColor,

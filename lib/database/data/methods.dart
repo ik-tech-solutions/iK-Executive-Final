@@ -5,9 +5,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_cab_driver/constance/constance.dart';
 import 'package:my_cab_driver/constance/global.dart';
 import 'package:my_cab_driver/database/HelperMethods.dart';
+import 'package:my_cab_driver/home/rotasPendentesList.dart';
 import 'package:my_cab_driver/models/carteira.dart';
 import 'package:my_cab_driver/models/logisticaExtra.dart';
 import 'package:my_cab_driver/models/servicosAdcionais.dart';
@@ -121,6 +123,83 @@ class Metodos {
     });
   }
 
+  // VERIFICAR OS PERIODOS DA AGENDA PARA NÃO LEVAR MAIS DE 2 NO MESMO DIA - VIRADO PARA P IK-BUSUNESS
+  static   verificarOcupacaoDePeriodo (BuildContext context,String idLogistica, String dataDaEncomenda, String periodoDaEncomenda, String tipoDeCliente, String remetente) async{
+    count_de_periodos_ja_ocupados = 0;
+       await FirebaseDatabase.instance.reference().child('motorista/${currentUserInfo.id}/calendario').once().then((results) {
+
+        if (results != null) {
+          DataSnapshot querySnapshot = results;
+          if (querySnapshot != null) {
+            var showData = querySnapshot.value;
+            Map<dynamic, dynamic> values = showData;
+
+            if (values != null) {
+              List<dynamic> key = values.keys.toList();
+              for (int i = 0; i < key.length; i++) {
+                dynamic data = values[key[i]];
+
+                if(dataDaEncomenda.substring(0,10) == data['StartTime'].toString().substring(0,10) ){
+
+
+                    if(data['periodo'].toString() == periodoDaEncomenda.toString()){
+                      print(data['StartTime'].toString() + "================== PERIODO OCUPADO 1 ================  " + data['periodo'].toString());
+                      count_de_periodos_ja_ocupados++;
+                     }
+
+                }
+
+              }
+
+              print("NUMEROS DE PERIODOS 1 ================ " + count_de_periodos_ja_ocupados.toString());
+
+              if (count_de_periodos_ja_ocupados >= 2) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(
+                  backgroundColor: Colors.red[900],
+                  content: Text(
+                      "Não pode aceitar mais de 2 serviços no mesmo horário!"),
+                ));
+
+                return;
+              } else{
+                Metodos.acceptRouteRequest(context, idLogistica);
+
+                final dbRef =
+                     FirebaseDatabase.instance.reference().child('motorista/${currentUserInfo.id}/calendario');
+                dbRef.push().set({
+                  "StartTime": dataDaEncomenda,
+                  "EndTime": dataDaEncomenda,
+                  "periodo" : periodoDaEncomenda,
+                  "Subject": tipoDeCliente == "ik_business" ? "Encomenda de ${remetente} de ${periodoDaEncomenda} "  : "Entrega da encomenda de ${remetente} ás ${dataDaEncomenda.substring(11,16)}",
+                  "ResourceId": idLogistica
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Parabéns, acaba de adicionar uma encomenda na tua agenda!"),
+                ));
+
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RotasPendentesList(),
+                  ),
+                );
+              }
+
+
+            }
+
+          }
+        }
+print("NUMEROS DE PERIODOS 2 ================ " + count_de_periodos_ja_ocupados.toString());
+    });
+
+
+  }
+
 
   static void acceptRouteRequest(context, String logisticaKey) {
 
@@ -145,6 +224,7 @@ class Metodos {
           currentUserInfo.token +
           ", irei fazer a entrega da sua encomenda.",
       'type_user': 'driver',
+      'read' : 'false',
       'date': DateTime.now().toString().substring(0,16)
     };
     chatRef.child(logisticaKey).push().set(messageMap);
@@ -177,6 +257,7 @@ class Metodos {
           ', com iktoken ' +
           currentUserInfo.token +
           ", já está se dirigindo até ao local de recolha.",
+      'read' : 'false',
       'type_user': 'driver',
       'date': DateTime.now().toString()
     };
@@ -213,6 +294,7 @@ class Metodos {
           ", desistiu de gerir a encomenda " +
           "${logisticaKey}",
       'type_user': 'driver',
+      'read' : 'false',
       'date': DateTime.now().toString()
     };
     chatRef.child(logisticaKey).push().set(messageMap);
@@ -245,6 +327,7 @@ class Metodos {
           ', com iktoken ' +
           currentUserInfo.token +
           ", confirmou a recolha da encomenda ",
+      'read' : 'false',
       'type_user': 'driver',
       'date': DateTime.now().toString()
     };
@@ -273,7 +356,7 @@ class Metodos {
     routeRef.child('nome_motorista').set(currentUserInfo.nomecompleto);
     routeRef.child('token_motorista').set(currentUserInfo.token);
     routeRef.child('fim').set(DateTime.now().toString().substring(0, 16));
-    print("OLASSASSASS");
+    print("TRABALHO TERMINADO");
 
     DatabaseReference logRef =
     FirebaseDatabase.instance.reference().child('logistica/$logisticaKey');
@@ -281,7 +364,7 @@ class Metodos {
       if (snapshot1.value != null) {
         logisticaEspecifica = new LogisticaExtra.fromSnapshot(snapshot1);
 
-        print("OLASSASSASS2111 " + logisticaEspecifica.referencia);
+        print("REFERENCIA DA LOGISTICA ============  " + logisticaEspecifica.referencia);
 
         if (logisticaEspecifica != null) {
           print(logisticaEspecifica.servico_adicional);
@@ -330,13 +413,13 @@ class Metodos {
                       ((logisticaEspecifica.servico_adicional[i])
                           .replaceAll(" ", ""))
                           .indexOf("€")));
-              print("Total cada---------------- " +
+              print("Total cada SERVICO ADICIONAL---------------- " +
                   quantidadeTotalCada.toString());
 
               custo_total_servicos_adicionais =
                   custo_total_servicos_adicionais + quantidadeTotalCada;
             }
-            print("Total cada11111111111---------------- " +
+            print("Total cada SERVICO ADICIONAL - OUTRO ---------------- " +
                 quantidadeTotalCada.toString());
             print("Total De Servicos Adicionais---------------- " +
                 custo_total_servicos_adicionais.toString());
@@ -361,8 +444,8 @@ class Metodos {
             ganhoTotal = snapshot3.value['ganho_total'].toString(),
             taxa_da_plataforma_total = snapshot3.value['taxa_total'].toString(),
           });
-          print("Carteira - Ganho Total: =========================" + ganhoTotal);
-          print("Carteira - Taxa da Plataforma Total: =========================" + taxa_da_plataforma_total);
+          print("Carteira - Ganho Total EXISTENTE: =========================" + ganhoTotal);
+          print("Carteira - Taxa da Plataforma Total EXISTENTE: =========================" + taxa_da_plataforma_total);
           //End Carteira
 
           Future.delayed(const Duration(seconds: 3), () async {
@@ -381,16 +464,16 @@ class Metodos {
             int horasDeTrabalho = addHour1.difference(addHour2).inHours;
 
             print(
-                "horasDeTrabalho=================================================" +
+                "TOTAL DE HORAS DE TRABALHO EM DIFERENÇA (h1 - h2) =================================================" +
                     horasDeTrabalho.toString());
             print(
-                "Hora arrendondada=================================================" +
+                "Primeira Hora arrendondada=================================================" +
                     addHour1.toString());
             print(
-                "Hora arrendondada 111 =================================================" +
+                "Segunda Hora arrendondada 111 =================================================" +
                     addHour2.toString());
             print(
-                "Hora arrendondada 2222 ================================================= " +
+                "Hora (SEM MINUTOS) e COM MINUTOS ================================================= " +
                     horasDeTrabalho.toString().substring(1) +
                     "|||" +
                     horasDeTrabalho.toString());
@@ -408,12 +491,11 @@ class Metodos {
             }
 
             print(
-                "HorasFinais=================================================" +
+                "Horas Finais =================================================" +
                     HorasFinais.toString());
-            double custo_porcentagem =
-                double.parse(logisticaEspecifica.taxaCobranca) / 100;
+            double custo_porcentagem = double.parse(logisticaEspecifica.taxaCobranca) / 100; //DA encomenda para iK
             print(
-                "custo_porcentagem=================================================" +
+                "custo_porcentagem da empresa IK=================================================" +
                     custo_porcentagem.toString());
 
             double custo_por_hora_servico =
@@ -421,12 +503,22 @@ class Metodos {
             print(
                 "custo_por_hora_servico=================================================" +
                     custo_por_hora_servico.toString());
+
+            //Tratr o iK-Business - Não existe nele o cronomentro/taxímetro, é um valor único! Por isso será uma hora apenas
+            if(logisticaEspecifica.tipo_de_cliente != null && logisticaEspecifica.tipo_de_cliente == "ik_business"){
+              HorasFinais = 1;
+            }
+
+
+
+
+
             if (HorasFinais != 0) {
               custo_por_hora_servico =
                   double.parse(logisticaEspecifica.preco) * HorasFinais;
             }
 
-            //Verificar tipo de casa na mudança
+            //Verificar tipo de casa na mudança (My iK - MUDANÇA DE CASA)
 
             if (logisticaEspecifica.tipoDeCasa == "T0") {
               if (HorasFinais <= 3) {
@@ -470,7 +562,9 @@ class Metodos {
                     double.parse(logisticaEspecifica.preco) * 16;
               }
             }
-            //Elevador no minimo opera em 3 horas
+
+
+            //Elevador no minimo opera em 2 horas
             if (logisticaEspecifica.carro == "Elevador Externo") {
               if (HorasFinais <= 2) {
                 custo_por_hora_servico =
@@ -478,25 +572,10 @@ class Metodos {
               }
             }
 
-            //Verificar se é de segunda a sabado das 20h as 08h - ou feriado
-            // if (ehSegunda_Sabado(
-            //     DateTime(today.year, today.month, today.day))) {
-            //   if (horasDeTrabalhoComAumento.contains(today.hour) ||
-            //       listaDeFeriados.contains(today.toString().substring(0, 10))) {
-            //     custo_por_hora_servico =
-            //         custo_por_hora_servico + (custo_por_hora_servico * 0.5);
-            //   } else {
                 custo_por_hora_servico = custo_por_hora_servico;
-              // }
-            // } else {
-            //   // eh domingo
-            //   custo_por_hora_servico =
-            //       custo_por_hora_servico + (custo_por_hora_servico * 0.5);
-            // }
-            //End verificar de segunda a saba das 20h as 08h - ou feriado
 
             print(
-                "custo_por_hora_servico1=================================================" +
+                "custo_por_hora_servico 1 =================================================" +
                     custo_por_hora_servico.toString());
 
             double custo_da_distancia =
@@ -555,8 +634,11 @@ class Metodos {
             adminRef.child("total").set(custo_total_provisorio.toString());
             adminRef.child("servico").set(custo_apenas_do_motorista.toString());
             adminRef.child("taxa").set(custo_da_empresa.toString());
+            adminRef.child("id_morista").set(currentUserInfo.id);
+            adminRef.child("id_usuario").set(logisticaEspecifica.uidCliente);
+            adminRef.child("tipo_usuario").set(logisticaEspecifica.tipo_de_cliente);
             adminRef.child("estado").set("aguardando");
-            adminRef.child("created_at").set(DateTime.now().toString());
+            adminRef.child("created_at").set(DateTime.now().toString().substring(0,16));
           });
         }
 
@@ -568,7 +650,7 @@ class Metodos {
         //Chamamento da funcao de envio de notificacao
         getRiderNotification(
             logisticaKey,
-            'O executivo ${currentUserInfo.nomecompleto} confirmou o término do trabalho',
+            'O executivo ${currentUserInfo.nomecompleto} confirmou o término do serviço',
             'Caro cliente!');
 
   }
@@ -584,6 +666,7 @@ class Metodos {
           currentUserInfo.token +
           ", confirmou a entrega da encomenda ",
       'type_user': 'driver',
+      'read' : 'false',
       'date': DateTime.now().toString()
     };
     chatRef.child(logisticaKey).push().set(messageMap);

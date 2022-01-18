@@ -28,7 +28,21 @@ class Logistica{
   String _regiao;
   List<dynamic>  _servico_adicional;
   String _valor_inicial;
+  String _tipo_de_cliente;
+  String _periodo_de_entrega;
 
+
+  String get periodo_de_entrega => _periodo_de_entrega;
+
+  set periodo_de_entrega(String value) {
+    _periodo_de_entrega = value;
+  }
+
+  String get tipo_de_cliente => _tipo_de_cliente;
+
+  set tipo_de_cliente(String value) {
+    _tipo_de_cliente = value;
+  }
 
   String get regiao => _regiao;
 

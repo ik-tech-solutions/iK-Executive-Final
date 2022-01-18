@@ -54,6 +54,8 @@ final horasDeTrabalhoComAumento = [
   08
 ];
 
+int count_de_periodos_ja_ocupados =0;
+
 List<Prediction> coletaPredictionList = [];
 List<Prediction> entregaPredictionList = [];
 List<String> listaDeVeiculo = [];
@@ -81,6 +83,8 @@ int logisticasConcluidasInt = 0;
 int logisticasConcluidasIntHistorico = 0;
 int logisticasPendentesInt = 0;
 int logisticasDisponiveisInt = 0;
+int logisticasMyWalletInt = 0;
+int logisticasHistoryInt = 0;
 
 bool resultadoDoRegistro;
 

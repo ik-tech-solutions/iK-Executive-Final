@@ -313,7 +313,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         width: 10,
                       ),
                       Text(
-                        AppLocalizations.of('Minha Carteira'),
+                        AppLocalizations.of('Carteira'),
                         style: Theme.of(context).textTheme.bodyText2.copyWith(
                               fontWeight: FontWeight.bold,
                               color:
@@ -364,7 +364,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         width: 10,
                       ),
                       Text(
-                        AppLocalizations.of('Minha Agenda'),
+                        AppLocalizations.of('Agenda'),
                         style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontWeight: FontWeight.bold,
                           color:
@@ -411,11 +411,10 @@ class _AppDrawerState extends State<AppDrawer> {
                         width: 10,
                       ),
                       Text(
-                        AppLocalizations.of('Serviços pendentes'),
+                        AppLocalizations.of('Meus Serviços'),
                         style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontWeight: FontWeight.bold,
-                          color:
-                          Theme.of(context).textTheme.headline6.color,
+                          color: Theme.of(context).textTheme.headline6.color,
                         ),
                       ),
                     ],

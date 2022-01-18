@@ -192,6 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
     Map messageMap = {
       'message': message,
       'type_user': 'driver',
+      'read' : 'false',
       'date': DateTime.now().toString()
     };
     newUserRef.set(messageMap);

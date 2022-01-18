@@ -52,7 +52,12 @@ class _RiderListState extends State<RiderList> {
       ),
       body:
             StreamBuilder(
-                stream: logisticasDisponiveisReFuture,
+                stream: FirebaseDatabase.instance
+                    .reference()
+                    .child('logistica')
+                    .orderByChild('status')
+                    .equalTo("aguardando")
+                    .onValue,
                 builder: (context, AsyncSnapshot<Event> snapshot) {
                   if (snapshot.hasData) {
                     listaLogistica.clear();
@@ -247,7 +252,7 @@ class _RiderListState extends State<RiderList> {
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             children: <Widget>[
                                               Text(
-                                                listaLogistica[index]['custo'] + " €/h",
+                                                listaLogistica[index]['tipo_usuario'] == "ik_business" ? listaLogistica[index]['custo'] + "€" : listaLogistica[index]['custo'] + " €/h" ,
                                                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   color: Theme.of(context).textTheme.headline6.color,
@@ -377,7 +382,12 @@ class _RiderListState extends State<RiderList> {
 
 
                               StreamBuilder(
-                                  stream: logisticasDisponiveisReFuture,
+                                  stream: FirebaseDatabase.instance
+                                      .reference()
+                                      .child('logistica')
+                                      .orderByChild('status')
+                                      .equalTo("aguardando")
+                                      .onValue,
                                   builder: (context, AsyncSnapshot<Event> snapshot) {
                                     if (snapshot.hasData) {
                                       logisticasDisponiveisInt = 0;
@@ -388,7 +398,7 @@ class _RiderListState extends State<RiderList> {
                                           logisticasDisponiveisInt++;
                                         });
                                         return Text(
-                                          "Existe "+logisticasDisponiveisInt.toString() + " encomendas disponíveis á tua espera.",
+                                          logisticasDisponiveisInt.toString() + " serviços disponíveis á tua espera.",
                                           style: Theme.of(context).textTheme.overline.copyWith(
                                             fontWeight: FontWeight.bold,
                                             color: ConstanceData.secoundryFontColor,
@@ -397,7 +407,7 @@ class _RiderListState extends State<RiderList> {
 
                                       } else {
                                         return Center( child:Text(
-                                          AppLocalizations.of("Não há encomendas disponívies no momento."),
+                                          AppLocalizations.of("Não há serviços disponíveis no momento."),
                                           style: Theme.of(context).textTheme.subtitle2.copyWith(
                                             fontWeight: FontWeight.normal,
                                             color: Colors.black,

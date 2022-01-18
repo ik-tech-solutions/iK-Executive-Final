@@ -334,18 +334,23 @@ class _MyWalletState extends State<MyWallet> {
 
 
                                   StreamBuilder(
-                                      stream: logisticasDisponiveisReFuture,
+                                      stream: FirebaseDatabase.instance
+                                          .reference()
+                                          .child('logistica')
+                                          .orderByChild('status')
+                                          .equalTo("aguardando")
+                                          .onValue,
                                       builder: (context, AsyncSnapshot<Event> snapshot) {
                                         if (snapshot.hasData) {
-                                          logisticasDisponiveisInt = 0;
+                                          logisticasMyWalletInt = 0;
                                           DataSnapshot dataValues = snapshot.data.snapshot;
                                           Map<dynamic, dynamic> values = dataValues.value;
                                           if(dataValues.value != null){
                                             values.forEach((key, values) {
-                                              logisticasDisponiveisInt++;
+                                              logisticasMyWalletInt++;
                                             });
                                             return Text(
-                                              "Existe "+logisticasDisponiveisInt.toString() + " encomendas disponíveis á tua espera.",
+                                              "Existe "+logisticasMyWalletInt.toString() + " encomendas disponíveis á tua espera.",
                                               style: Theme.of(context).textTheme.overline.copyWith(
                                                 fontWeight: FontWeight.bold,
                                                 color: ConstanceData.secoundryFontColor,
