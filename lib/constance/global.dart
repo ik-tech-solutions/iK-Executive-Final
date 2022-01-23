@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:my_cab_driver/Language/LanguageData.dart';
 import 'package:my_cab_driver/models/diretionsDetails.dart';
 import 'package:my_cab_driver/models/predictions.dart';
@@ -16,7 +16,7 @@ import 'package:my_cab_driver/models/servicosAdcionais.dart';
 import 'package:my_cab_driver/models/veiculoExtra.dart';
 
 bool isOffline = false;
-LocationData posicaoActual;
+// LocationData posicaoActual;
 GoogleMapController controllerHome;
 var isLight = true;
 var primaryRiderColorString = '#e9055c';

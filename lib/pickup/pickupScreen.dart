@@ -23,7 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../appTheme.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:my_cab_driver/pickup/dropoffScreen.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 
 class PickupScreen extends StatefulWidget {
 
@@ -41,9 +41,9 @@ class _PickupScreenState extends State<PickupScreen> {
   final FirebaseAuth authFB = FirebaseAuth.instance;
 
   //Track Realtime
-  Location location;
-  LocationData _currentPosition;
-  LocationData destinationLocation;
+  // Location location;
+  // LocationData _currentPosition;
+  // LocationData destinationLocation;
   String _address,_dateTime;
   Marker marker1;
   LatLng _initialcameraposition = LatLng(0.5937, 0.9629);
@@ -110,21 +110,21 @@ class _PickupScreenState extends State<PickupScreen> {
     setSourceAndDestinationIcons();
     setInitialLocation();
 
-    location = new Location();
+    // location = new Location();
     polylinePoints = PolylinePoints();
 
-    location.onLocationChanged.listen((l) {
-      print("Coordenadas---------------------------------" + l.toString());
-      _currentPosition = l;
-      updatePinOnMap();
-
-      setTrack(_currentPosition.latitude, _currentPosition.longitude);
-      setDuracao_e_Distancia (_currentPosition.latitude,
-                              _currentPosition.longitude,
-                              double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).latitudeColeta),
-                              double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).longitudeColeta));
-
-                            });
+    // location.onLocationChanged.listen((l) {
+    //   print("Coordenadas---------------------------------" + l.toString());
+    //   _currentPosition = l;
+    //   updatePinOnMap();
+    //
+    //   setTrack(_currentPosition.latitude, _currentPosition.longitude);
+    //   setDuracao_e_Distancia (_currentPosition.latitude,
+    //                           _currentPosition.longitude,
+    //                           double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).latitudeColeta),
+    //                           double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).longitudeColeta));
+    //
+    //                         });
 
     getLoc();
 
@@ -135,21 +135,21 @@ class _PickupScreenState extends State<PickupScreen> {
     // create a new CameraPosition instance
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation
-    CameraPosition cPosition = CameraPosition(
-      zoom: 18,
-      tilt: CAMERA_TILT,
-      bearing: CAMERA_BEARING,
-      target: LatLng(_currentPosition.latitude,
-          _currentPosition.longitude),
-    );
+    // CameraPosition cPosition = CameraPosition(
+    //   zoom: 18,
+    //   tilt: CAMERA_TILT,
+    //   bearing: CAMERA_BEARING,
+    //   target: LatLng(_currentPosition.latitude,
+    //       _currentPosition.longitude),
+    // );
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    // controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
     // that a widget update is due
     setState(() {
       // updated position
-      var pinPosition = LatLng(_currentPosition.latitude,
-          _currentPosition.longitude);
+      // var pinPosition = LatLng(_currentPosition.latitude,
+      //     _currentPosition.longitude);
 
       //Remover
       _markers.removeWhere((m) => m.markerId.value == 'actualPin');
@@ -158,7 +158,7 @@ class _PickupScreenState extends State<PickupScreen> {
       // Actual posicao
       _markers.add(Marker(
         markerId: MarkerId('actualPin'),
-        position: pinPosition,
+        // position: pinPosition,
         icon: sourceIcon,
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -170,16 +170,16 @@ class _PickupScreenState extends State<PickupScreen> {
   }
 
   void setInitialLocation() async {
-    _currentPosition = await location.getLocation();
-
-    destinationLocation = LocationData.fromMap({
-      "latitude": double.parse(HelperMethods
-          .getLogisticaEspecifica(widget.logisticaKey)
-          .latitudeColeta),
-      "longitude": double.parse(HelperMethods
-          .getLogisticaEspecifica(widget.logisticaKey)
-          .longitudeColeta)
-    });
+    // _currentPosition = await location.getLocation();
+    //
+    // destinationLocation = LocationData.fromMap({
+    //   "latitude": double.parse(HelperMethods
+    //       .getLogisticaEspecifica(widget.logisticaKey)
+    //       .latitudeColeta),
+    //   "longitude": double.parse(HelperMethods
+    //       .getLogisticaEspecifica(widget.logisticaKey)
+    //       .longitudeColeta)
+    // });
   }
 
   void showPinsOnMap() async {
@@ -247,15 +247,15 @@ class _PickupScreenState extends State<PickupScreen> {
 
   getLoc() async{
     bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
+    // PermissionStatus _permissionGranted;
+    //
+    // _serviceEnabled = await location.serviceEnabled();
+    // if (!_serviceEnabled) {
+    //   _serviceEnabled = await location.requestService();
+    //   if (!_serviceEnabled) {
+    //     return;
+    //   }
+    // }
 
     // _permissionGranted = await location.hasPermission();
     // if (_permissionGranted == PermissionStatus.denied) {
@@ -265,17 +265,17 @@ class _PickupScreenState extends State<PickupScreen> {
     //   }
     // }
 
-    _currentPosition = await location.getLocation();
-    _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      print("${currentLocation.latitude} : ${currentLocation.longitude}");
-      print("Coordenadas123---------------------------------");
-      setState(() {
-        _currentPosition = currentLocation;
-        _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-
-      });
-    });
+    // _currentPosition = await location.getLocation();
+    // _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
+    // location.onLocationChanged.listen((LocationData currentLocation) {
+    //   print("${currentLocation.latitude} : ${currentLocation.longitude}");
+    //   print("Coordenadas123---------------------------------");
+    //   setState(() {
+    //     _currentPosition = currentLocation;
+    //     _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
+    //
+    //   });
+    // });
   }
 
 
@@ -330,21 +330,21 @@ class _PickupScreenState extends State<PickupScreen> {
     //     LatLng(double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).latitudeColeta), double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).longitudeColeta)));
     // tripDirectionDetails = thisDetails;
     Future.delayed(const Duration(seconds: 2), () async {
-      PolylineResult  results =
-      await polylinePoints.getRouteBetweenCoordinates(googleAPIKey,
-          PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
-          PointLatLng(double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).latitudeColeta), double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).longitudeColeta)),
-          travelMode: TravelMode.driving);//.decodePolyline(thisDetails.encodedPoints);
+      // PolylineResult  results =
+      // await polylinePoints.getRouteBetweenCoordinates(googleAPIKey,
+      //     PointLatLng(_currentPosition.latitude, _currentPosition.longitude),
+      //     PointLatLng(double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).latitudeColeta), double.parse(HelperMethods.getLogisticaEspecifica(widget.logisticaKey).longitudeColeta)),
+      //     travelMode: TravelMode.driving);//.decodePolyline(thisDetails.encodedPoints);
 
-      print("Polilinhas-----------------------: "+ results.toString());
-      if (results.points.isNotEmpty) {
-        // loop through all PointLatLng points and convert them
-        // to a list of LatLng, required by the Polyline
-        results.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-          print("Polilinhas1-----------------------: "+ LatLng(point.latitude, point.longitude).toString());
-        });
-      }
+      // print("Polilinhas-----------------------: "+ results.toString());
+      // if (results.points.isNotEmpty) {
+      //   // loop through all PointLatLng points and convert them
+      //   // to a list of LatLng, required by the Polyline
+      //   results.points.forEach((PointLatLng point) {
+      //     polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      //     print("Polilinhas1-----------------------: "+ LatLng(point.latitude, point.longitude).toString());
+      //   });
+      // }
 
       setState(() {
         // create a Polyline instance
@@ -595,13 +595,13 @@ class _PickupScreenState extends State<PickupScreen> {
         tilt: CAMERA_TILT,
         target: LatLng(0.5937, 0.9629));
 
-    if (_currentPosition != null) {
-      _initialcameraposition = CameraPosition(
-          zoom: CAMERA_ZOOM,
-          bearing: CAMERA_BEARING,
-          tilt: CAMERA_TILT,
-          target: LatLng(_currentPosition.latitude, _currentPosition.longitude));
-    }
+    // if (_currentPosition != null) {
+    //   _initialcameraposition = CameraPosition(
+    //       zoom: CAMERA_ZOOM,
+    //       bearing: CAMERA_BEARING,
+    //       tilt: CAMERA_TILT,
+    //       target: LatLng(_currentPosition.latitude, _currentPosition.longitude));
+    // }
 
     return  StreamBuilder(
         stream: FirebaseDatabase.instance.reference().child('logistica').child(widget.logisticaKey).onValue,
@@ -1483,7 +1483,7 @@ class _PickupScreenState extends State<PickupScreen> {
                                                             onTap: () {
                                                               // Navigator.pop(context);
 
-                                                              sos("Emergencia", '${widget.logisticaKey}', authFB.currentUser.uid, _currentPosition.latitude.toString(), _currentPosition.longitude.toString());
+                                                              // sos("Emergencia", '${widget.logisticaKey}', authFB.currentUser.uid, _currentPosition.latitude.toString(), _currentPosition.longitude.toString());
 
                                                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                                 content: Text("Pedido enviado com sucesso! Brevemente entraremos em contacto consigo."),

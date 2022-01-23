@@ -51,11 +51,11 @@ class PhoneVerification extends StatelessWidget {
                       color: Colors.blue,
                       onPressed: () async{
                         final code = _codeController.text.trim();
-                        AuthCredential credential = PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: code);
+                        AuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: code);
 
                         UserCredential result = await _auth.signInWithCredential(credential);
 
-                        FirebaseUser user = result.user;
+                        User user = result.user;
 
                         if(user != null){
                           print("Cool");

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:my_cab_driver/constance/constance.dart';
 import 'package:my_cab_driver/drawer/drawer.dart';
 import 'package:my_cab_driver/home/riderList.dart';
@@ -68,29 +68,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   LatLng _initialcameraposition = LatLng(20.5937, 78.9629);
   GoogleMapController _controller;
-  Location _location = Location();
-  LocationData _currentPosition;
+  // Location _location = Location();
+  // LocationData _currentPosition;
 
   void _onMapCreated(GoogleMapController _cntlr)
   {
     setState(() {
     _controller = _cntlr;
-    _location.onLocationChanged.listen((l) {
-
-      print("Coordenadas para actual localizacao ---------------------------------" + l.toString());
-      _currentPosition = l;
-      setHomeTrack(l.latitude, l.longitude); //guardar no banco de dados a actual localizacao do driver
-      print("Coordenadas para actual localizacao ---------------------------------" + _currentPosition.toString());
-
-      posicaoActual = l;
-
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(posicaoActual.latitude, posicaoActual.longitude),zoom: 18),
-
-        ),
-      );
-    });
+    // _location.onLocationChanged.listen((l) {
+    //
+    //   print("Coordenadas para actual localizacao ---------------------------------" + l.toString());
+    //   _currentPosition = l;
+    //   setHomeTrack(l.latitude, l.longitude); //guardar no banco de dados a actual localizacao do driver
+    //   print("Coordenadas para actual localizacao ---------------------------------" + _currentPosition.toString());
+    //
+    //   posicaoActual = l;
+    //
+    //   _controller.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(target: LatLng(posicaoActual.latitude, posicaoActual.longitude),zoom: 18),
+    //
+    //     ),
+    //   );
+    // });
       // setMapStyle();
     });
   }

@@ -29,48 +29,49 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.4
   google_fonts: ^1.1.0
   flutter_page_indicator: ^0.0.3
   #  shared_preferences: ^0.5.7+3
   shared_preferences: ^2.0.0
   # country_pickers: any
-  country_code_picker: ^1.7.0
-  font_awesome_flutter: ^8.8.1
+  country_code_picker: ^2.0.2
+  font_awesome_flutter: ^9.2.0
   google_maps_flutter: ^0.5.28+1
 
   flutter_google_places: ^0.2.8
   http: ^0.12.0+2
-  provider: ^4.3.2+2
-  geolocator: ^5.1.1+1
+  provider: ^6.0.2
+  geolocator: ^6.2.1
   google_map_polyline:
   flutter_polyline_points: ^0.2.4
-  location: ^3.0.0
-  crypto: ^2.1.4
+#  location: ^3.1.0
+  crypto: ^3.0.1
+#  animator: ^3.1.0
   animator: ^1.0.0+3
-  dotted_border: ^1.0.5
+  dotted_border: ^2.0.0+2
   image_picker: ^0.6.7+21
   url_launcher: ^6.0.5
   intl: ^0.17.0
-  auto_size_text: ^2.1.0
-  flutter_html_to_pdf: ^0.6.1
+  auto_size_text: ^3.0.0
+  flutter_html_to_pdf: ^0.7.0
   flutter_full_pdf_viewer: ^1.0.6
-  syncfusion_flutter_calendar: ^18.2.44
+  syncfusion_flutter_calendar: ^19.4.43
   flutter_restart: ^0.0.3
   share: ^2.0.4
 
   get_version: ^0.2.2
 
-  firebase_messaging: ^7.0.0
-  firebase_core: ^0.5.0
-  firebase_database: ^4.0.0
-  firebase_auth: ^0.18.0+1
+  firebase_messaging: ^8.0.0-dev.15
+  firebase_core: ^0.7.0
+  firebase_database: ^6.0.0
+  firebase_auth: ^0.20.1
   firebase_auth_web: ^0.3.0+1
 
   get: ^4.1.4
   sms_autofill: ^2.0.0
-  flutter_svg: ^0.19.3
-  cloud_firestore: ^0.14.4
+  flutter_svg: ^1.0.0
+  cloud_firestore: ^0.16.0+1
 
 dependency_overrides:
   intl: ^0.17.0-nullsafety.2

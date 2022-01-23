@@ -18,21 +18,21 @@ class PushNotificationService {
     if (Platform.isIOS) {
       fcm.requestNotificationPermissions(IosNotificationSettings());
     }
-    fcm.configure(
-      onBackgroundMessage: (Map<String, dynamic> message) async {
-        print("backgroundNotification $message");
-      },
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        print("Messagem");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onRes:ume $message");
-      },
-    );
+    // fcm.configure(
+    //   onBackgroundMessage: (Map<String, dynamic> message) async {
+    //     print("backgroundNotification $message");
+    //   },
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print("onMessage: $message");
+    //     print("Messagem");
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print("onRes:ume $message");
+    //   },
+    // );
   }
 
   Future<String> getToken() async {
